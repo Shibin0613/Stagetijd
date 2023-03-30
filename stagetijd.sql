@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 29, 2023 at 03:32 PM
--- Server version: 10.4.20-MariaDB
--- PHP Version: 8.0.9
+-- Gegenereerd op: 30 mrt 2023 om 13:53
+-- Serverversie: 10.4.27-MariaDB
+-- PHP-versie: 8.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,40 +24,40 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `koppeltakentags`
+-- Tabelstructuur voor tabel `koppeltakentags`
 --
 
 CREATE TABLE `koppeltakentags` (
   `takenId` int(11) NOT NULL,
   `tagId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `koppeltakenwerkdag`
+-- Tabelstructuur voor tabel `koppeltakenwerkdag`
 --
 
 CREATE TABLE `koppeltakenwerkdag` (
   `taakId` int(11) NOT NULL,
   `werkdagId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `koppelwerkdagopmerking`
+-- Tabelstructuur voor tabel `koppelwerkdagopmerking`
 --
 
 CREATE TABLE `koppelwerkdagopmerking` (
   `werkdagId` int(11) NOT NULL,
   `opmerkingId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `logboek`
+-- Tabelstructuur voor tabel `logboek`
 --
 
 CREATE TABLE `logboek` (
@@ -70,24 +70,24 @@ CREATE TABLE `logboek` (
   `donderdagId` int(11) NOT NULL,
   `vrijdagId` int(11) NOT NULL,
   `goedgekeurd` int(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `opmerkingen`
+-- Tabelstructuur voor tabel `opmerkingen`
 --
 
 CREATE TABLE `opmerkingen` (
   `id` int(11) NOT NULL,
   `opmerking` text NOT NULL,
   `userId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `stage`
+-- Tabelstructuur voor tabel `stage`
 --
 
 CREATE TABLE `stage` (
@@ -98,35 +98,35 @@ CREATE TABLE `stage` (
   `startdatum` date NOT NULL,
   `einddatum` date NOT NULL,
   `active` int(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tags`
+-- Tabelstructuur voor tabel `tags`
 --
 
 CREATE TABLE `tags` (
   `id` int(11) NOT NULL,
   `naam` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `taken`
+-- Tabelstructuur voor tabel `taken`
 --
 
 CREATE TABLE `taken` (
   `id` int(11) NOT NULL,
   `taak` varchar(200) NOT NULL,
   `uur` int(2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Tabelstructuur voor tabel `users`
 --
 
 CREATE TABLE `users` (
@@ -136,46 +136,55 @@ CREATE TABLE `users` (
   `wachtwoord` varchar(250) NOT NULL,
   `role` int(1) NOT NULL,
   `active` int(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `users`
+--
+
+INSERT INTO `users` (`id`, `naam`, `email`, `wachtwoord`, `role`, `active`) VALUES
+(1, 'kevin', 'kevinka1239@gmail.com', 'Kevinka1', 1, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `werkdag`
+-- Tabelstructuur voor tabel `werkdag`
 --
 
 CREATE TABLE `werkdag` (
   `id` int(11) NOT NULL,
-  `datum` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `datum` date NOT NULL,
+  `ziek` int(2) NOT NULL,
+  `vrij` int(2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Indexes for dumped tables
+-- Indexen voor geëxporteerde tabellen
 --
 
 --
--- Indexes for table `koppeltakentags`
+-- Indexen voor tabel `koppeltakentags`
 --
 ALTER TABLE `koppeltakentags`
   ADD KEY `TakenId` (`takenId`),
   ADD KEY `TagId` (`tagId`);
 
 --
--- Indexes for table `koppeltakenwerkdag`
+-- Indexen voor tabel `koppeltakenwerkdag`
 --
 ALTER TABLE `koppeltakenwerkdag`
   ADD KEY `WerkdagId` (`werkdagId`),
   ADD KEY `TaakId` (`taakId`);
 
 --
--- Indexes for table `koppelwerkdagopmerking`
+-- Indexen voor tabel `koppelwerkdagopmerking`
 --
 ALTER TABLE `koppelwerkdagopmerking`
   ADD KEY `OpmerkingenId` (`opmerkingId`),
   ADD KEY `werkdagId` (`werkdagId`);
 
 --
--- Indexes for table `logboek`
+-- Indexen voor tabel `logboek`
 --
 ALTER TABLE `logboek`
   ADD PRIMARY KEY (`id`),
@@ -187,14 +196,14 @@ ALTER TABLE `logboek`
   ADD KEY `StudentId` (`userId`);
 
 --
--- Indexes for table `opmerkingen`
+-- Indexen voor tabel `opmerkingen`
 --
 ALTER TABLE `opmerkingen`
   ADD PRIMARY KEY (`id`),
   ADD KEY `PraktijkbegeleiderDocent` (`userId`);
 
 --
--- Indexes for table `stage`
+-- Indexen voor tabel `stage`
 --
 ALTER TABLE `stage`
   ADD PRIMARY KEY (`id`),
@@ -202,102 +211,102 @@ ALTER TABLE `stage`
   ADD KEY `student` (`studentId`);
 
 --
--- Indexes for table `tags`
+-- Indexen voor tabel `tags`
 --
 ALTER TABLE `tags`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `taken`
+-- Indexen voor tabel `taken`
 --
 ALTER TABLE `taken`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `users`
+-- Indexen voor tabel `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `werkdag`
+-- Indexen voor tabel `werkdag`
 --
 ALTER TABLE `werkdag`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT voor geëxporteerde tabellen
 --
 
 --
--- AUTO_INCREMENT for table `logboek`
+-- AUTO_INCREMENT voor een tabel `logboek`
 --
 ALTER TABLE `logboek`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `opmerkingen`
+-- AUTO_INCREMENT voor een tabel `opmerkingen`
 --
 ALTER TABLE `opmerkingen`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `stage`
+-- AUTO_INCREMENT voor een tabel `stage`
 --
 ALTER TABLE `stage`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `tags`
+-- AUTO_INCREMENT voor een tabel `tags`
 --
 ALTER TABLE `tags`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `taken`
+-- AUTO_INCREMENT voor een tabel `taken`
 --
 ALTER TABLE `taken`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT voor een tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `werkdag`
+-- AUTO_INCREMENT voor een tabel `werkdag`
 --
 ALTER TABLE `werkdag`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for dumped tables
+-- Beperkingen voor geëxporteerde tabellen
 --
 
 --
--- Constraints for table `koppeltakentags`
+-- Beperkingen voor tabel `koppeltakentags`
 --
 ALTER TABLE `koppeltakentags`
   ADD CONSTRAINT `TagId` FOREIGN KEY (`tagId`) REFERENCES `tags` (`id`),
   ADD CONSTRAINT `TakenId` FOREIGN KEY (`takenId`) REFERENCES `taken` (`id`);
 
 --
--- Constraints for table `koppeltakenwerkdag`
+-- Beperkingen voor tabel `koppeltakenwerkdag`
 --
 ALTER TABLE `koppeltakenwerkdag`
   ADD CONSTRAINT `TaakId` FOREIGN KEY (`taakId`) REFERENCES `taken` (`id`),
   ADD CONSTRAINT `WerkdagId` FOREIGN KEY (`werkdagId`) REFERENCES `werkdag` (`id`);
 
 --
--- Constraints for table `koppelwerkdagopmerking`
+-- Beperkingen voor tabel `koppelwerkdagopmerking`
 --
 ALTER TABLE `koppelwerkdagopmerking`
   ADD CONSTRAINT `OpmerkingenId` FOREIGN KEY (`opmerkingId`) REFERENCES `opmerkingen` (`id`),
   ADD CONSTRAINT `koppelwerkdagopmerking_ibfk_1` FOREIGN KEY (`werkdagId`) REFERENCES `werkdag` (`id`);
 
 --
--- Constraints for table `logboek`
+-- Beperkingen voor tabel `logboek`
 --
 ALTER TABLE `logboek`
   ADD CONSTRAINT `Dinsdag` FOREIGN KEY (`dinsdagId`) REFERENCES `werkdag` (`id`),
@@ -308,13 +317,13 @@ ALTER TABLE `logboek`
   ADD CONSTRAINT `Woensdag` FOREIGN KEY (`woensdagId`) REFERENCES `werkdag` (`id`);
 
 --
--- Constraints for table `opmerkingen`
+-- Beperkingen voor tabel `opmerkingen`
 --
 ALTER TABLE `opmerkingen`
   ADD CONSTRAINT `PraktijkbegeleiderDocent` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
 
 --
--- Constraints for table `stage`
+-- Beperkingen voor tabel `stage`
 --
 ALTER TABLE `stage`
   ADD CONSTRAINT `Praktijkbegeleider` FOREIGN KEY (`praktijdbegeleiderId`) REFERENCES `users` (`id`),

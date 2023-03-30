@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="style.css">
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
+<body>
+<form method="post" action="">
 <section class="h-100 gradient-form" style="background-color: #eee;">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
@@ -25,18 +27,19 @@
                   <p>log hier in</p>
 
                   <div class="form-outline mb-4">
-                    <input type="email" id="form2Example11" class="form-control"
-                      placeholder="emailadres" />
-                    <label class="form-label" for="form2Example11">email</label>
+                  <input type="email" name="email" class="form-control form-control-lg"
+                  placeholder="Enter a valid email address" />
+                  <label class="form-label" for="form3Example3">Email address</label>
                   </div>
 
                   <div class="form-outline mb-4">
-                    <input type="password" id="form2Example22" class="form-control" />
-                    <label class="form-label" for="form2Example22">wachtwoord</label>
+                  <input type="password" name="wachtwoord" class="form-control form-control-lg"
+                  placeholder="Enter password" />
+                  <label class="form-label" for="form3Example4">Password</label>
                   </div>
 
                   <div class="text-center pt-1 mb-5 pb-1">
-                    <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button">Log
+                    <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" input type="submit" id="submit"> Log
                       in</button>
                   </div>
 
@@ -53,6 +56,7 @@
                      Door gebruik te maken van de nieuwste technologieën en hun programmeervaardigheden,
                       ontwikkelden ze een systeem dat het hele proces van stagetijd automatisch afhandelde</p>
               </div>
+              </form>
             </div>
           </div>
         </div>
@@ -60,3 +64,47 @@
     </div>
   </div>
 </section>
+</body>
+</html>
+
+
+<?php
+ include 'conn.php';
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+      $query = "SELECT * FROM users WHERE email = :email AND wachtwoord = :wachtwoord LIMIT 1";
+       $st = $conn->prepare($query);
+       $st->bindParam(':email',$_POST['email'], \PDO::PARAM_STR);
+       $st->bindParam(':wachtwoord',$_POST['wachtwoord'], \PDO::PARAM_STR);
+       $st->execute();
+
+        $re = $st->rowCount(); //als er verkeerde gegevens worden ingevuld.
+
+        $data = $st->fetchObject();
+
+        if($re == 0) {
+          echo '<script>alert("Verkeerde mail/wachtwoord")</script>';
+        }
+        else
+                    {
+                            $role = $row['role'];
+                            if(empty($data->role) && $re >= 1)
+                            {
+                              header("location:homedocent.php");
+                            }
+                            if(empty($data->role) && $re >= 2)
+                            {
+                                header("location:StudentenHomepagina.php");
+                            }
+
+                            else
+                            {
+                                header("jemoeder.php");
+
+                            }
+
+
+                    }
+}
+   
+
+?>

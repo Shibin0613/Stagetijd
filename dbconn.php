@@ -1,19 +1,16 @@
 <?php
-
-// DB Conn
-// $servername = "localhost";
-// $username = "";
-// $password = "";
-// $db = "";
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$db = "stagetijd";
-
-$conn = mysqli_connect($servername, $username, $password, $db);
-
-if (!$conn) {
-    echo "Connection Failed";
-}
-?>
+    session_start();  
+    $host = "localhost";  
+    $username = "root";  
+    $password = "";  
+    $database = "stagetijd"; 
+    try  
+    {
+         $conn = new PDO("mysql:host=$host;dbname=$database", $username, $password);
+         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    } 
+    catch(PDOException $error)
+    {
+        $message = $error->getMessage(); 
+    }
+    ?>
