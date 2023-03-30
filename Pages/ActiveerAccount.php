@@ -28,6 +28,9 @@ $emailadres = $_GET['emailadres'];
     <br/><br/>
     <center><h4>Account activeren</h4><br/>
     <div class="form-group">
+    <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+  <div class="progress-bar bg-success" style="width: 50%"><?php 50/100?></div>
+</div>
     <form action="" method="POST">
         <label for="emailadres">Email:</label><br/>
         <label class="form-control" style="width:20%"><?php echo $emailadres;?></label>
@@ -62,7 +65,6 @@ $emailadres = $_GET['emailadres'];
 <?php 
 if(isset($_POST['activeren'])){
     $wachtwoord = $_POST['wachtwoord'];
-    $active = 1;
     
     //de wachtwoord wordt in de database geupdatet, met zelfde emailadres, omdat wij de emailadres uniek hebben ingesteld 
     $query = "UPDATE users SET wachtwoord='$wachtwoord' WHERE email = '$emailadres'";
