@@ -48,7 +48,7 @@
 </html>
 
 <?php
-include "dbconn.php";
+include "../Database/dbconn.php";
 
   
   if(isset($_POST['submit'])){
@@ -56,7 +56,8 @@ include "dbconn.php";
   $email = $_POST['email'];
   $role = 1;
   $active = 1;
-    $sql = "INSERT INTO users (`naam`, `email`, `role`, `active`) VALUES ('$name', '$email', '$role', '$active')";
+  $guid = uniqid();
+    $sql = "INSERT INTO users (`naam`, `email`, `role`, `active`, `activationcode`) VALUES ('$name', '$email', '$role', '$active', '$guid')";
     $sql_run= mysqli_query($conn, $sql);
     if($sql_run){
       echo "<script>alert('docent is toegevoegd.')</script>";
