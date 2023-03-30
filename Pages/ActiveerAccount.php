@@ -63,9 +63,7 @@ $emailadres = $_GET['emailadres'];
 if(isset($_POST['activeren'])){
     $wachtwoord = $_POST['wachtwoord'];
     $active = 1;
-
-    include 'conn.php';
-    error_reporting(0);
+    
     //de wachtwoord wordt in de database geupdatet, met zelfde emailadres, omdat wij de emailadres uniek hebben ingesteld 
     $query = "UPDATE users SET wachtwoord='$wachtwoord' WHERE email = '$emailadres'";
     $data = $conn->prepare($query);
