@@ -1,4 +1,5 @@
 <?php
+include ("header.php");
 //voor het geval dat emailadres null is, dan wordt hij naar andere pagina gestuurd, en toont geen foutmelding 
 
 

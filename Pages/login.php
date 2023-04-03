@@ -70,15 +70,16 @@
 
 
 <?php
-include '../Database/dbconn.php';
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+require_once "../vendor/autoload.php";
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $query = "SELECT * FROM users WHERE email = :email AND wachtwoord = :wachtwoord LIMIT 1";
   $stmt = $conn->prepare($query);
   $stmt->bindParam(':email', $_POST['email'], \PDO::PARAM_STR);
   $stmt->bindParam(':wachtwoord', $_POST['wachtwoord'], \PDO::PARAM_STR);
   $stmt->execute();
 
- // $role = $stmt->(); //als er verkeerde gegevens worden ingevuld.
+  // $role = $stmt->(); //als er verkeerde gegevens worden ingevuld.
 
   $data = $stmt->fetchObject();
 
