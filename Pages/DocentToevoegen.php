@@ -56,18 +56,18 @@
 
   
 if(isset($_POST['submit'])){
-  $name = $_POST['name'];
-  $email = $_POST['email'];
-  $role = 1;
-  $active = 1;
-  $guid = uniqid();
-  $stmt = $conn->prepare("INSERT INTO users (`naam`, `email`, `role`, `active`, `activationcode`) VALUES (?,?,?,?,?)");
-  $stmt->bindParam(1, $name);
-  $stmt->bindParam(2, $email);
-  $stmt->bindParam(3, $role);
-  $stmt->bindParam(4, $active);
-  $stmt->bindParam(5, $guid);
-  $stmt->execute();
- 
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $role = 1;
+    $active = 1;
+    $guid = uniqid();
+    $stmt = $conn->prepare("INSERT INTO users (`naam`, `email`, `role`, `active`, `activationcode`) VALUES (?,?,?,?,?)");
+    $stmt->bindParam(1, $name);
+    $stmt->bindParam(2, $email);
+    $stmt->bindParam(3, $role);
+    $stmt->bindParam(4, $active);
+    $stmt->bindParam(5, $guid);
+    $stmt->execute();
+}
 
 ?>
