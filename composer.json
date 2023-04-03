@@ -1,0 +1,12 @@
+{
+    "name": "tfham/stagetijd",
+    "require": {},
+    "autoload": {
+        "files": [
+            "functions/helpers.php"
+        ],
+        "psr-4": {
+            "Controllers\\": "classes" 
+        }
+    }
+}

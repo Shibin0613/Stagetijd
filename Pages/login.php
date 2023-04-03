@@ -69,3 +69,34 @@
 </html>
 
 
+<?php
+require_once "../vendor/autoload.php";
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+  $query = "SELECT * FROM users WHERE email = :email AND wachtwoord = :wachtwoord LIMIT 1";
+  $stmt = $conn->prepare($query);
+  $stmt->bindParam(':email', $_POST['email'], \PDO::PARAM_STR);
+  $stmt->bindParam(':wachtwoord', $_POST['wachtwoord'], \PDO::PARAM_STR);
+  $stmt->execute();
+
+  // $role = $stmt->(); //als er verkeerde gegevens worden ingevuld.
+
+  $data = $stmt->fetchObject();
+
+  if ($role == 0) {
+    echo '<script>alert("Verkeerde mail/wachtwoord")</script>';
+  } else {
+    $role = $row['role'];
+    if (empty($data->role) && $role >= 1) {
+      header("location:homedocent.php");
+    }
+    if (empty($data->role) && $role >= 2) {
+      header("location:StudentenHomepagina.php");
+    } else {
+      header("jemoeder.php");
+    }
+  }
+}
+
+
+?>
