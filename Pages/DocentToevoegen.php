@@ -31,7 +31,7 @@ if(isset($_POST['submit'])){
     $name = $_POST['name'];
     $email = $_POST['email'];
     $role = 1;
-    $active = 1;
+    $active = 0;
     $guid = uniqid();
 $result1 = DB::insert("INSERT INTO `users` (`naam`, `email`, `role`, `active`, `activationcode`) VALUES (:naam, :email, :rol, :active, :activationcode)", ['naam' => $name, 'email' => $email, 'rol' => $role, 'active' => $active, 'activationcode' => $guid]);
 
