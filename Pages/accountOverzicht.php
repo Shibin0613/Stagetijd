@@ -12,29 +12,41 @@
 <?php
 include "header.php";
 use Controllers\DB;
-//select alle studenten
-$role = "1";
-$result = DB::select("SELECT * FROM users WHERE `role` = :rol", ['rol' => $role]);
-
-
-
-
+    $active_filter = $_POST['active_filter'];
+    $role = "1";
+        $result = DB::select("SELECT * FROM users WHERE `active` = :active AND `role` = :rol", ['active' => $active_filter, 'rol' => $role]);
+  
 ?>
 
 <div class="container">
     <div class="row">
         </div class="col-sm"> 
-        <?php
+        <form method="POST" action="">
+    <select name="active_filter" id="active_filter">
+        <option value="1">Actief</option>
+        <option value="0">Niet Actief</option>
+    </select>
+    <input type="submit" value="Filter">
+</form>  
+
+<?php 
+    // if ($active_filter == '0') {
+    //     $result = DB::select("SELECT * FROM users WHERE `active` = :active AND `role` = :rol", ['active' => '0', 'rol' => '1']);
+    // } elseif ($active_filter == '1') {
+    //     $result = DB::select("SELECT * FROM users WHERE `active` = :active AND `role` = :rol", ['active' => '1', 'rol' => '1']);
+    // } 
+
             if ($result) {
             foreach($result as $row) {
-            // var_dump($row['naam']);
             echo '<a href="docentenOverzicht.php?id=' . $row['id'] . '"><div class="StudentenOverzicht">' . $row['naam'] . '</div></a>';
         }
         } else {
             echo "No users found.";
         }
-
+       
         ?>
+
+        
         </div>
     </div>
 </div>
