@@ -66,8 +66,12 @@
     }
 
     .StudentenOverzicht:hover{
-        border-color:#6a6a7d;
-        text-decoration: none
+        border-color:#9c9ca0;
+        color: #9c9ca0;
+    }
+
+    a:hover{
+        text-decoration: none;
     }
 
     /* testje  */

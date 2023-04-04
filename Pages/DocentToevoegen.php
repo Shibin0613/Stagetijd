@@ -4,7 +4,7 @@
 <html>
 
 <head>
-  <title>Insert Data into Database</title>
+  <title>Docent toevoegen</title>
 </head>
 
 <body>
