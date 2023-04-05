@@ -30,7 +30,7 @@ include("header.php");
 		<label for="einddatum">Einddatum:</label>
 		<input type="date" id="einddatum" name="einddatum" required>
 
-		<input type="submit" value="Verstuur">
+		<input type="submit" value="Verstuur" name="verstuur">
 	
 </form>
 
@@ -54,28 +54,26 @@ $username = 'root';
 $password = '';
 // $to_leerling = 'learner@example.com';
 // $to_bedrijf = 'company@example.com';
-
-if(isset($_POST['bedrijf']) && isset($_POST['naam']) && isset($_POST['naam_pb']) && isset($_POST['email_leerling']) && isset($_POST['email_bedrijf']) && isset($_POST['begindatum']) && isset($_POST['einddatum'])) {
-
+use Controllers\DB;
+if(isset($_POST['verstuur'])){
 		// Connect to database using PDO
 		$db = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
 		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 		// Insert student and PB names into users table
+		$naam = $_POST['naam'];
+		$email = $_POST['email_leerling'];
+
 		$insert_users = $db->prepare("INSERT INTO users (naam, email) VALUES (:naam, :email)");
 		$insert_users->bindParam(':naam', $naam);
 		$insert_users->bindParam(':email', $email);
 
-		$naam = $_POST['naam'];
-		$email = $_POST['email_leerling'];
-		$insert_users->execute();
-
-		$naam = $_POST['naam_pb'];
-		$email = '';
+		
 		$insert_users->execute();
 
 		// Insert stage values into stage table
-		$insert_stage = $db->prepare("INSERT INTO stage (bedrijf, begindatum, einddatum) VALUES (:bedrijf, :begindatum, :einddatum)");
+		$last_id = $db->lastInsertId();
+		$insert_stage = $db->prepare("INSERT INTO stage (bedrijf, startdatum, einddatum) VALUES (:bedrijf, :begindatum, :einddatum)");
 		$insert_stage->bindParam(':bedrijf', $_POST['bedrijf']);
 		$insert_stage->bindParam(':begindatum', $_POST['begindatum']);
 		$insert_stage->bindParam(':einddatum', $_POST['einddatum']);
@@ -94,11 +92,11 @@ if(isset($_POST['bedrijf']) && isset($_POST['naam']) && isset($_POST['naam_pb'])
 		// mail($to_bedrijf, $subject_bedrijf, $message_bedrijf, $headers_bedrijf);
 
 		// Redirect to success page
-		header('Location: homedocent.php');
+		// header('Location: homedocent.php');
 		exit;
 	
     } 
     
-    else {
-        echo  $_POST['bedrijf'] ,   $_POST['naam'] ,     $_POST['naam'] ,     $_POST['email_leerling'] ,     $_POST['email_bedrijf'] ,     $_POST['begindatum'] ;
-    }
+     else {
+        echo  $_POST['verstuur']  ;
+     }
