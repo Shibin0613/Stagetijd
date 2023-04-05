@@ -176,6 +176,6 @@ class DB
     public static function delete(string $query, array $params = [])
     {
         $stmt = self::$pdo->prepare($query);
-        $stmt->execute($params);
+        $stmt->execute($params);    
     }
 }

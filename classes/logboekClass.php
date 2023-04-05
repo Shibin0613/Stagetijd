@@ -1,9 +1,15 @@
 <?php
-class Stage {
+class Logboek {
     public $id;
-    public $studentid;
-    public $praktijkbegeleiderID;
-    
+    public $internshipId;
+    public $weekNumber;
+    public $monday;
+    public $tuesday;
+    public $wednesday;
+    public $thursday;
+    public $friday;
+    public $approved;
+
 
     function __construct($id) {
         $this->id = $id;
