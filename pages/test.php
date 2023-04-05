@@ -15,13 +15,41 @@
 include("header.php");
 
 use Controllers\DB;
-$naam = "Tim";
-$email = "tfh@gmail.com";
-$rol = 1;
-$result1 = DB::insert("INSERT INTO `users` (`naam`, `email`, `role`) VALUES (:naam, :email, :rol)", ['naam' => $naam, 'email' => $email, 'rol' => $rol, ]);
-$userid = 2;
-$active = 1;
-$result2 = DB::update("UPDATE `users` SET `active` = :active WHERE id = :userid", ['active' => $active, 'userid' => $userid]);
-$result3 = DB::select("SELECT * FROM users WHERE id = :userid", ['userid' => $userid]);
-var_dump($result3);
+$table = "users";
+$data = [
+    'naam' => "Timhamer", 
+    'email' => "tfhammersma@gmail.com", 
+    'role' => 1, 
+];
+$result1 = DB::select($table, $data);
+var_dump($result1);
+
+// $userid = 2;
+// $active = 1;
+// $result2 = DB::update("UPDATE `users` SET `active` = :active WHERE id = :userid", ['active' => $active, 'userid' => $userid]);
+
+// $data = [
+//     [
+//         'naam' => 'Tim',
+//         'email' => 'tfhammersma@gmail.com',
+//         'role' => 1,
+//         'active' => 1,
+//     ],
+//     [
+//         'naam' => 'Tim2',
+//         'email' => 'tfhammersma@gmail.com',
+//         'role' => 1,
+//         'active' => 1,
+//     ]
+// ];
+
+// $data = [
+//     'naam' => 'Tim',
+//     'email' => 'tfhammersma@gmail.com',
+//     'role' => 1,
+//     'active' => 1,
+// ];
+// $table = "users";
+// $result3 = DB::insert($table, $data);
+// var_dump($result3);
 
