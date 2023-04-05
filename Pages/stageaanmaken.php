@@ -9,54 +9,94 @@ include("header.php");
 
 <body>
 <form method="post" action="">
-    <label for="naam_leerling">Naam Leerling:</label>
-    <input type="text" name="naam" id="naam_leerling">
-    <label for="naam_bedrijf">Naam Bedrijf:</label>
-    <input type="text" name="naam_bedrijf" id="naam_bedrijf">
-    <label for="naam_pb">Naam PB:</label>
-    <input type="text" name="naam_pb" id="naam_pb">
-    <label for="email_leerling">Email Leerling:</label>
-    <input type="email" name="email_leerling" id="email_leerling">
-    <label for="email_bedrijf">Email Bedrijf:</label>
-    <input type="email" name="email_bedrijf" id="email_bedrijf">
-    <input type="submit" value="Submit">
+		<label for="bedrijf">Bedrijf:</label>
+		<input type="text" id="bedrijf" name="bedrijf" required>
+
+		<label for="naam_leerling">Naam leerling:</label>
+		<input type="text" id="naam_leerling" name="naam" required>
+
+		<label for="naam_pb">Naam praktijkbegeleider:</label>
+		<input type="text" id="naam_pb" name="naam" required>
+
+		<label for="email_leerling">Email leerling:</label>
+		<input type="email" id="email_leerling" name="email_leerling" required>
+
+		<label for="email_bedrijf">Email bedrijf:</label>
+		<input type="email" id="email_bedrijf" name="email_bedrijf" required>
+
+		<label for="begindatum">Begindatum:</label>
+		<input type="date" id="begindatum" name="begindatum" required>
+
+		<label for="einddatum">Einddatum:</label>
+		<input type="date" id="einddatum" name="einddatum" required>
+
+		<input type="submit" value="Verstuur" name="verstuur">
+	
 </form>
+
+<script>
+		// Set min date for the end date input to the selected date on the begin date input
+		document.getElementById("begindatum").addEventListener("change", function() {
+			document.getElementById("einddatum").setAttribute("min", this.value);
+		});
+	</script>
+
 
 </body>
 </html>
 
 
 <?php
-
+// Replace these placeholders with your own values
+$host = 'localhost';
+$dbname = 'stagetijd';
+$username = 'root';
+$password = '';
+// $to_leerling = 'learner@example.com';
+// $to_bedrijf = 'company@example.com';
 use Controllers\DB;
+if(isset($_POST['verstuur'])){
+		// Connect to database using PDO
+		$db = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+		// Insert student and PB names into users table
+		$naam = $_POST['naam'];
+		$email = $_POST['email_leerling'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $naam_leerling = $_POST['naam'];
-    $naam_bedrijf = $_POST['naam_bedrijf'];
-    $naam_pb = $_POST['naam_pb'];
-    $email_leerling = $_POST['email_leerling'];
-    $email_bedrijf = $_POST['email_bedrijf'];
+		$insert_users = $db->prepare("INSERT INTO users (naam, email) VALUES (:naam, :email)");
+		$insert_users->bindParam(':naam', $naam);
+		$insert_users->bindParam(':email', $email);
 
-    $result1 = DB::insert("INSERT INTO `users` (`naam`, `email`) VALUES (:naam, :email)", ['naam' => $naam, 'email' => $email_leerling ]);
-    $result2 = DB::insert("INSERT INTO `users` (`naam`, `email`) VALUES (:naam, :email)", ['naam' => $naam, 'email' => $email_bedrijf ]);
-    $result3 = DB::insert("INSERT INTO `stage` (`bedrijf`, `email`) VALUES (:naam, :email)", ['naam' => $naam, 'email' => $email ]);
+		
+		$insert_users->execute();
 
+		// Insert stage values into stage table
+		$last_id = $db->lastInsertId();
+		$insert_stage = $db->prepare("INSERT INTO stage (bedrijf, startdatum, einddatum) VALUES (:bedrijf, :begindatum, :einddatum)");
+		$insert_stage->bindParam(':bedrijf', $_POST['bedrijf']);
+		$insert_stage->bindParam(':begindatum', $_POST['begindatum']);
+		$insert_stage->bindParam(':einddatum', $_POST['einddatum']);
+		$insert_stage->execute();
+
+		// // Send email to learner
+		// $subject_leerling = 'stage';
+		// $message_leerling = 'er is een stage aangemaakt op uw mail klik hier om u stage te bevestigen ';
+		// $headers_leerling = 'From: noreply@example.com' . "\r\n";
+		// mail($to_leerling, $subject_leerling, $message_leerling, $headers_leerling);
+
+		// // Send email to company
+		// $subject_bedrijf = 'stage';
+		// $message_bedrijf = 'er is een stage met uw bedrijf aangemaakt klik hier om uw stage te bevestigen';
+		// $headers_bedrijf = 'From: noreply@example.com' . "\r\n";
+		// mail($to_bedrijf, $subject_bedrijf, $message_bedrijf, $headers_bedrijf);
+
+		// Redirect to success page
+		// header('Location: homedocent.php');
+		exit;
+	
+    } 
     
-    $to_leerling = $email_leerling;
-    $to_bedrijf = $email_bedrijf;
-    $subject_leerling = 'uw stage is aangemaakt';
-    $message_leerling = 'klik op de "knop" om uw stage aantemaken';
-    $subject_bedrijf = 'stage van <?php $naam_lerling ?>';
-    $message_bedrijf = 'hierbij een bevesteging dat u een stage begint met een nieuwe leerling, 
-    klik op de knop om verder te gaan';
-    
-    // Send emails
-    mail($to_leerling, $subject_leerling, $message_leerling);
-    mail($to_bedrijf, $subject_bedrijf, $message_bedrijf);
-    
-    // Redirect to success page
-    header('Location: homepagina.php');
-    exit();
-}
-?>
+     else {
+        echo  $_POST['verstuur']  ;
+     }

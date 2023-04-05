@@ -4,13 +4,13 @@
 <html>
 
 <head>
-  <title>Insert Data into Database</title>
+  <title>Docent toevoegen</title>
 </head>
 
 <body>
   <h2>Docent toevoegen</h2>
 
-  <form method="POST" action="">
+  <form method="POST" action="Mail.php">
     <label for="name">Naam:</label>
     <input type="text" id="name" name="name" required>
 
