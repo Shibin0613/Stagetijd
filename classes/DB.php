@@ -172,4 +172,10 @@ class DB
         $stmt->execute($params);
         return $stmt->rowCount();
     }
+
+    public static function delete(string $query, array $params = [])
+    {
+        $stmt = self::$pdo->prepare($query);
+        $stmt->execute($params);
+    }
 }
