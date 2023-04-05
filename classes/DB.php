@@ -160,7 +160,7 @@ class DB
         $columns = '';
         $values = '';
         $teller = 1;
-        return $stmt->rowCount();
+        return self::$pdo->lastInsertId();
 
         // Return the number of affected rows.
     }
