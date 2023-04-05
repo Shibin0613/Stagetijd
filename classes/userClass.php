@@ -7,6 +7,9 @@ class User {
     public $role;
     public $active;
     public $activationcode;
+    public $logboek = [];
+    public $internship = [];
+    
 
     function __construct($id) {
         $this->id = $id;

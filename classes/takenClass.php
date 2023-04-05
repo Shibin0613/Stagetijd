@@ -1,5 +1,5 @@
 <?php
-class Stage {
+class Taken {
     public $id;
     public $date;
     public $tasks;

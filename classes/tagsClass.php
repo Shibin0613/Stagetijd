@@ -1,5 +1,5 @@
 <?php
-class Opmerking {
+class Tags {
     public $id;
     public $tags;
 
