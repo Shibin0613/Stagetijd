@@ -1,4 +1,6 @@
 <?php
+include "header.php";
+ use Controllers\DB;
 class Services
 {
     private $connection;
@@ -8,4 +10,9 @@ class Services
     {
         $this->connection = $conn;
     }
+}
+
+function accountVerwijderen($id_to_delete, $conn)
+{
+  
 }
