@@ -34,14 +34,25 @@ $activationcode = $_GET['activationcode'];
     <form action="" method="POST">
     <?php
         use Controllers\DB;
-        $email = DB::select("SELECT email FROM users WHERE activationcode = :activationcode", ['activationcode' => $activationcode]);
+        $table = "users";
+        $data = [
+            'activationcode' => "$activationcode", 
+        ];
+        $email = DB::select($table, $data);
+
         ?>
         <label for="emailadres">Email:</label><br/>
         <label class="form-control" style="width:20%"><?php echo $email[0]['email'];?></label>
         <br/><br/>
         
         <?php
-        $result = DB::select("SELECT wachtwoord FROM users WHERE activationcode = :activationcode", ['activationcode' => $activationcode]);
+
+        $table = "users";
+        $data = [
+            'activationcode' => "$activationcode", 
+        ];
+        $result = DB::select($table, $data);
+        
         if(empty($result[0]['wachtwoord'])){
             echo "
                 <label for='wachtwoord'>Wachtwoord:</label><br/>
