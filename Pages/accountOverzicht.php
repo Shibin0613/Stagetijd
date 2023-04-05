@@ -12,15 +12,11 @@
 <?php
 include "header.php";
 use Controllers\DB;
-    $active_filter = $_POST['active_filter'];
+    $active_filter = isset($_POST['active_filter']) ? $_POST['active_filter'] : "1";
     $role = "1";
         $result = DB::select("SELECT * FROM users WHERE `active` = :active AND `role` = :rol", ['active' => $active_filter, 'rol' => $role]);
   
 ?>
-
-<div class="container">
-    <div class="row">
-        </div class="col-sm"> 
         <form method="POST" action="">
     <select name="active_filter" id="active_filter">
         <option value="1">Actief</option>
@@ -28,14 +24,13 @@ use Controllers\DB;
     </select>
     <input type="submit" value="Filter">
 </form>  
+<div class="container">
+    <div class="row">
+        </div class="col-sm"> 
+
 
 <?php 
-    // if ($active_filter == '0') {
-    //     $result = DB::select("SELECT * FROM users WHERE `active` = :active AND `role` = :rol", ['active' => '0', 'rol' => '1']);
-    // } elseif ($active_filter == '1') {
-    //     $result = DB::select("SELECT * FROM users WHERE `active` = :active AND `role` = :rol", ['active' => '1', 'rol' => '1']);
-    // } 
-
+ 
             if ($result) {
             foreach($result as $row) {
             echo '<a href="docentenOverzicht.php?id=' . $row['id'] . '"><div class="StudentenOverzicht">' . $row['naam'] . '</div></a>';
