@@ -9,8 +9,8 @@
 
 <body>  
   <div class="container m-5">
-      <form method="POST" action="Mail.php">
-        <h3 class="mb-4">Docent toevoegen</h3>
+      <form  class="docentToevoegen" method="POST" action="Mail.php">
+        <h3 class="Docenth3">Docent toevoegen</h3>
         <label for="name">Naam:</label>
         <input type="text" id="name" name="name" required>
 
@@ -31,12 +31,16 @@ include "header.php";
 use Controllers\DB;
 
 if (isset($_POST['submit'])) {
-  $name = $_POST['name'];
-  $email = $_POST['email'];
-  $role = 1;
-  $active = 0;
-  $guid = uniqid();
-  $result1 = DB::insert("INSERT INTO `users` (`naam`, `email`, `role`, `active`, `activationcode`) VALUES (:naam, :email, :rol, :active, :activationcode)", ['naam' => $name, 'email' => $email, 'rol' => $role, 'active' => $active, 'activationcode' => $guid]);
+
+  $data = [
+    'naam' => $_POST['name'],
+    'email' => $_POST['email'],
+    'role' => 1,
+    'active' => 0,
+  'activationcode' => uniqid(),
+];
+$table = "users";
+$lastInsertedId = DB::insert($table, $data);
 }
 
 ?>

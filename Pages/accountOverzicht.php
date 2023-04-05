@@ -12,10 +12,15 @@
 <?php
 include "header.php";
 use Controllers\DB;
-    $active_filter = isset($_POST['active_filter']) ? $_POST['active_filter'] : "1";
-    $role = "1";
-        $result = DB::select("SELECT * FROM users WHERE `active` = :active AND `role` = :rol", ['active' => $active_filter, 'rol' => $role]);
-  
+
+$table = "users";
+$active_filter = isset($_POST['active_filter']) ? $_POST['active_filter'] : "1";
+$data = [
+    'active' => $active_filter,
+    'role' => 1,
+];
+$result = DB::select($table, $data);
+
 ?>
         <form method="POST" action="">
     <select name="active_filter" id="active_filter">

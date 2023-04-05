@@ -28,28 +28,28 @@ var_dump($result1);
 // $active = 1;
 // $result2 = DB::update("UPDATE `users` SET `active` = :active WHERE id = :userid", ['active' => $active, 'userid' => $userid]);
 
-// $data = [
-//     [
-//         'naam' => 'Tim',
-//         'email' => 'tfhammersma@gmail.com',
-//         'role' => 1,
-//         'active' => 1,
-//     ],
-//     [
-//         'naam' => 'Tim2',
-//         'email' => 'tfhammersma@gmail.com',
-//         'role' => 1,
-//         'active' => 1,
-//     ]
-// ];
+$data = [
+    [
+        'naam' => 'Tim',
+        'email' => 'tfhammersma@gmail.com',
+        'role' => 1,
+        'active' => 1,
+    ],
+    [
+        'naam' => 'Tim2',
+        'email' => 'tfhammersma@gmail.com',
+        'role' => 1,
+        'active' => 1,
+    ]
+];
 
-// $data = [
-//     'naam' => 'Tim',
-//     'email' => 'tfhammersma@gmail.com',
-//     'role' => 1,
-//     'active' => 1,
-// ];
-// $table = "users";
-// $result3 = DB::insert($table, $data);
-// var_dump($result3);
+$data = [
+    'naam' => 'Tim',
+    'email' => 'tfhammersma@gmail.com',
+    'role' => 1,
+    'active' => 1,
+];
+$table = "users";
+$result3 = DB::insert($table, $data);
+var_dump($result3);
 
