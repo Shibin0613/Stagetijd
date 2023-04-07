@@ -9,9 +9,6 @@ class DB
 {
     private static PDO $pdo;
 
-
-
-
     public static function connect()
     {
         $host = "localhost";
@@ -28,7 +25,7 @@ class DB
     }
 
     // Selects data from a MySQL database table.
-    public static function select(string $table, array $data = [], $para = NULL): array
+    public static function select(string $table, array $data = [], string $query = null): array
     {
         // Get the number of elements in the array.
         $count = count($data);
@@ -59,29 +56,46 @@ class DB
                 $where .= ' ' . $k . ' = "' . $v . '"';
             }
         }   
-        // Construct the SELECT query with the table name and WHERE clause.
-        if ($para != NULL) {
-            $data = self::join($para);
-            $query = "SELECT " . $data['select'] . " FROM " . $table . $data['join'] . $data['on'] . $where;
-        } else {
             $query = "SELECT * FROM $table $where";
-        }
         // Prepare the query statement.
         $stmt = self::$pdo->prepare($query);
 
         // Execute the query.
-        // $stmt->execute();
+        $stmt->execute();
 
-        echo $query;
 
         // Return the selected rows as an array of associative arrays.
         return $stmt->fetchAll(PDO::FETCH_ASSOC); // object
     }
-    private static function join($para)
+        public static function join($mainTable, $col, $joinTables, array $joinCols, $id)
     {
-        // gebruik para om onderstaande aan te passen
-        return $array = ['select' => 'a', 'join' => 'join', 'on' => 'on'];
+        $table = $mainTable;
+        $select = '*';
+
+        $joins = '';
+        $selects = '';
+
+        if (!is_array($joinTables)) {
+            $joinTables = [$joinTables];
+            $col = [$col];
+            $joinCols = [$joinCols];
+        }
+
+        foreach ($joinTables as $key => $joinTable) {
+            $joins .= " JOIN $joinTable ON $table[$key].$col[$key] = $joinTable." . $joinCols[$key][0];
+            $selects .= ", $joinTable." . $joinCols[$key][1];
+        }
+
+        $query = "SELECT $table[0].$select $selects FROM $table[0] $joins WHERE $id[0] = :id";
+echo $query;
+        $stmt = self::$pdo->prepare($query);
+        $stmt->execute(['id' => $id[1]]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+        // return self::select($table, ['id' => $id[1]], $query);
     }
+    
     // Inserts data into a MySQL database table.
     public static function insert(string $table, array $data = []) #:  int
     {

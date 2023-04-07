@@ -15,14 +15,14 @@
 include("header.php");
 
 use Controllers\DB;
-$table = "users";
-$data = [
-    'naam' => "Timhamer", 
-    'email' => "tfhammersma@gmail.com", 
-    'role' => 1, 
-];
-$result1 = DB::select($table, $data);
-var_dump($result1);
+// $table = "users";
+// $data = [
+//     'naam' => "Timhamer", 
+//     'email' => "tfhammersma@gmail.com", 
+//     'role' => 1, 
+// ];
+// $result1 = DB::select($table, $data);
+// var_dump($result1);
 
 // $userid = 2;
 // $active = 1;
@@ -43,13 +43,18 @@ var_dump($result1);
 //     ]
 // ];
 
-$data = [
-    'naam' => 'Tim',
-    'email' => 'tfhammersma@gmail.com',
-    'role' => 1,
-    'active' => 1,
-];
-$table = "users";
-$result3 = DB::insert($table, $data);
-var_dump($result3);
+// $data = [
+//     'naam' => 'Tim',
+//     'email' => 'tfhammersma@gmail.com',
+//     'role' => 1,
+//     'active' => 1,
+// ];
+// $table = "users";
+// $result3 = DB::insert($table, $data);
+// var_dump($result3);
+$id = 2;
+
+$result4 = DB::join(["taken", "koppeltakentags"], ["id", "tagId"], ["koppeltakentags", "tags"], [['takenId', '*'], ['id', '*']], ["taken.id", $id]);
+echo "<br>";
+var_dump($result4);
 
