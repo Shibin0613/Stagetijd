@@ -34,10 +34,10 @@ class DB
         $count = count($data);
 
         // Initialize a variable to hold the WHERE clause.
-        $where = 'WHERE ';
 
         // If there are multiple elements in the array, loop through them and construct the WHERE clause.
         if ($count > 1) {
+            $where = 'WHERE ';
             $teller = 1;
             foreach ($data as $k => $v) {
 
@@ -53,35 +53,32 @@ class DB
                 // Increment the counter.
                 $teller++;
             }
-        }
-        // If there is only one element in the array, construct the WHERE clause for it.
-        elseif ($count == 1) {
+        } elseif ($count == 1) {
+            $where = 'WHERE ';
             foreach ($data as $k => $v) {
                 $where .= ' ' . $k . ' = "' . $v . '"';
             }
-        }
-        // If there are no elements in the array, set the WHERE clause to an empty string.
-        else {
-            $where = '';
-        }
-
+        }   
         // Construct the SELECT query with the table name and WHERE clause.
-        if($para != NULL){
+        if ($para != NULL) {
             $data = self::join($para);
-            $query = "SELECT ".$data['select']." FROM ".$table .$data['join'] .$data['on'] .$where;
-        }else{
+            $query = "SELECT " . $data['select'] . " FROM " . $table . $data['join'] . $data['on'] . $where;
+        } else {
             $query = "SELECT * FROM $table $where";
         }
         // Prepare the query statement.
         $stmt = self::$pdo->prepare($query);
 
         // Execute the query.
-        $stmt->execute();
+        // $stmt->execute();
+
+        echo $query;
 
         // Return the selected rows as an array of associative arrays.
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);// object
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); // object
     }
-    private static function join($para){
+    private static function join($para)
+    {
         // gebruik para om onderstaande aan te passen
         return $array = ['select' => 'a', 'join' => 'join', 'on' => 'on'];
     }
@@ -176,6 +173,6 @@ class DB
     public static function delete(string $query, array $params = [])
     {
         $stmt = self::$pdo->prepare($query);
-        $stmt->execute($params);    
+        $stmt->execute($params);
     }
 }
