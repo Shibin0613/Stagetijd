@@ -1,7 +1,7 @@
 <?php
 class Tags {
     public $id;
-    public $tags;
+    public $name;
 
     function __construct($id) {
         $this->id = $id;
