@@ -19,6 +19,14 @@ include ("header.php");
     </head>
     <body>
 
+    <form action="" method="POST">
+      <p>Datum vandaag//later op hidden</p>
+      <input name="datum" id="myDateInput" readonly>
+    </form>
+    <?php
+    $datum = "2023-04-11";
+    ?>
+
     <?php 
     use Controllers\DB;
 
@@ -56,13 +64,10 @@ include ("header.php");
             <th>Uren</th>
         </tr>
         <tr>
-          <form action="" method="POST">
-            <input type="date" name="datum" id="myDateInput">
-          </form>
+          
           
             <td>
             <?php
-            $datum = $_POST['datum'];
             echo date("W", strtotime($datum));
             ?>
             </td>
@@ -71,7 +76,7 @@ include ("header.php");
             <td>123131</td>
             <td>asdasd</td>
             <td>asdasd</td>
-            <td></td>
+            <td>Uren in totaal</td>
         </tr>
     </table>
     
