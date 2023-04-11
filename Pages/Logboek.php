@@ -28,11 +28,16 @@ include ("header.php");
     ];
     
     $result = DB::select($table, $data);
-    $startdatum=strtotime($result[0]['startdatum']);
-    $einddatum=strtotime($result[0]['einddatum']);
-    $verschil = $einddatum-$startdatum;
-    $week = floor($verschil/(60*60*24*7));
-    echo $week." weken";
+    if (isset($result[0]['startdatum'])){
+      $startdatum=strtotime($result[0]['startdatum']);
+      $einddatum=strtotime($result[0]['einddatum']);
+      $verschil = $einddatum-$startdatum;
+      $week = floor($verschil/(60*60*24*7));
+      echo $week." weken";
+    }else
+    {
+
+    }
     
     ?>
 
@@ -42,6 +47,7 @@ include ("header.php");
 
     <table>
         <tr>
+            <th>Weeknummber</th>
             <th>Maandag</th>
             <th>Dinsdag</th>
             <th>Woensdag</th>
@@ -50,42 +56,25 @@ include ("header.php");
             <th>Uren</th>
         </tr>
         <tr>
+          <form action="" method="POST">
+            <input type="date" name="datum" id="myDateInput">
+          </form>
+          
+            <td>
             <?php
-                $table = "logboek";
-                $data = [
-                'id' => "1",
-                ];
-                
-                $result = DB::select($table, $data);
-                $maandagid= $result[0]['maandagId'];
-                $dinsdagid= $result[0]['dinsdagId'];
-                $woensdagid= $result[0]['woensdagId'];
-                $donderdagid= $result[0]['donderdagId'];
-                $vrijdagid= $result[0]['vrijdagId'];
-
-                $table = "koppeltakenwerkdag";
-                $data = [
-                    "werkdagId" => "$maandagid"
-                ];
-                $result = DB::select($table, $data);
-                $taakid = $result[0]['taakId'];
-
-
-                $table = "taken";
-                $data = [
-                    "id" => "$taakid"
-                ];
-                $result = DB::select($table, $data);
-                ?>
-            <td><?php echo $result[0]['taak']?></td>
-
+            $datum = $_POST['datum'];
+            echo date("W", strtotime($datum));
+            ?>
+            </td>
+            <td>asdasdad</td>
+            <td>12313d</td>
+            <td>123131</td>
             <td>asdasd</td>
             <td>asdasd</td>
-            <td>asdasd</td>
-            <td>asdasd</td>
-            <td><?php echo $result[0]['uur']?></td>
+            <td></td>
         </tr>
     </table>
+    
     <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -113,19 +102,33 @@ include ("header.php");
                     <br>
                     <p>Tags</p>
                     <select name='tags'>
-                    <option>Schoolopdracht</option>
-                    <option>Programmeren</option>
                     </select>
                     <button type='button' data-toggle='modal' data-target='#myModal'>Tags toevoegen</button>
                     <p>Datum</p>
-                    <input type='date' name='datum' id='myDateInput' readonly>
+                    <input type='text' value='".$datum."' readonly>
                     <br>
                     <br>
                     <button type='submit' onclick='dailypopup()' name='dailyinlever'>Inleveren</button>
                     
                 </form>
                 ";
+
+                $table = "tags";
+                $i = 0;
+                while ($i<4){
+                $data = [
+                  $i++,
+                  "id" => $i,
+                ];
+                $tagsresult = DB::select($table, $data);
                 ?>
+                <select>
+                <option>
+                  <?php echo $tagsresult[0]['naam']; 
+                  }
+                  ?>
+                </option> 
+              </select>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -133,18 +136,15 @@ include ("header.php");
       </div>
     </div>
 </div>
-    
-
-
-
 
     
 </body>
 </html>
 <script>
 const today = new Date();
-      const dateInput = document.getElementById("myDateInput");
-      dateInput.value = today.toISOString().substr(0, 10);
+const dateInput = document.getElementById("myDateInput");
+dateInput.value = today.toISOString().substr(0, 10);
+
 function checkdelete(){
   return confirm('Weet je zeker dat je deze daily willen verwijderen?');
 }
