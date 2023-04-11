@@ -85,7 +85,7 @@ $table = "stage";
                 $woensdagid= $result[0]['woensdagId'];
                 $donderdagid= $result[0]['donderdagId'];
                 $vrijdagid= $result[0]['vrijdagId'];
-				
+
 				$table = "koppeltakenwerkdag";
                 $data = [
                     "werkdagId" => "$maandagid",
@@ -176,3 +176,14 @@ $table = "stage";
 <body>
   </body>
 </div>
+
+
+<script>
+const today = new Date();
+      const dateInput = document.getElementById("myDateInput");
+      dateInput.value = today.toISOString().substr(0, 10);
+function checkdelete(){
+  return confirm('Weet je zeker dat je deze daily willen verwijderen?');
+}
+
+</script>
