@@ -12,7 +12,3 @@ class Services
     }
 }
 
-function accountVerwijderen($id_to_delete, $conn)
-{
-  
-}

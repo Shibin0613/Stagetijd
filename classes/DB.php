@@ -25,7 +25,7 @@ class DB
     }
 
     // Selects data from a MySQL database table.
-    public static function select(string $table, array $data = [], string $query = null): array
+    public static function select(string $table, array $data = []): array
     {
         // Get the number of elements in the array.
         $count = count($data);
