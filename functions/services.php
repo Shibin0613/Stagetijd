@@ -9,7 +9,9 @@ include_once('../classes/UserClass.php');
 include_once('../classes/WerkdagClass.php');
 
 include "header.php";
+
 use Controllers\DB;
+
 class Services
 {
     // private $connection;
@@ -20,10 +22,10 @@ class Services
     //     $this->connection = $conn;
     // }
 
-    
+
 }
 
-class StudentServices extends Services 
+class StudentServices extends Services
 {
     public function getUserBy($data)
     {
@@ -40,7 +42,6 @@ class StudentServices extends Services
             $this->getInternshipBy(['studentId' => $value["id"]], $user);
         }
         return $user;
-
     }
 
     public function getInternshipBy($data, $user)
@@ -55,46 +56,68 @@ class StudentServices extends Services
             $internship->startDate = $value["startdatum"];
             $internship->endDate = $value["einddatum"];
             $internship->active = $value["active"];
-            $this->getLogboekBy(['stageId' => $value["id"]], $internship);
+            $this->getLogBy(['stageId' => $value["id"]], $internship);
             $user->internship[] = $internship;
         }
     }
 
-    public function getLogboekBy($data, $internship)
+    public function getLogBy($data, $internship)
     {
         $table = "logboek";
         $logQuery = DB::select($table, $data);
-        var_dump($logQuery);
         foreach ($logQuery as $key => $value) {
             $log = new Logboek($value["id"]);
-            $log->id = $value["bedrijf"];
-            $log->internshipId = $value["praktijkbegeleiderId"];
-            $log->weekNumber = $value["studentId"];
-            $log->monday = $value["startdatum"];
-            $log->tuesday = $value["einddatum"];
-            $log->wednesday = $value["active"];
-            $log->thursday = $value["active"];
-            $log->friday = $value["active"];
-            $log->approved = $value["active"];
-            $this->getLogboekBy(['stageId' => $value["id"]], $internship);
+            $log->internshipId = $value["stageId"];
+            $log->weekNumber = $value["weeknummer"];
+            $log->monday = $this->getWorkDayBy(['id' => $value["maandagId"]]);
+            $log->tuesday = $this->getWorkDayBy(['id' => $value["dinsdagId"]]);
+            $log->wednesday = $this->getWorkDayBy(['id' => $value["woensdagId"]]);
+            $log->thursday = $this->getWorkDayBy(['id' => $value["donderdagId"]]);
+            $log->friday = $this->getWorkDayBy(['id' => $value["vrijdagId"]]);
+            $log->approved = $value["goedgekeurd"];
             $internship->logboek[] = $log;
         }
     }
 
-    public function getTagby($data, $taken)
+    public function getWorkDayBy($data)
     {
-        $table = "tags";
-        $tagQuery = DB::select($table, $data);
+        $table = "werkdag";
+        $workdayQuery = DB::select($table, $data);
+        foreach ($workdayQuery as $key => $value) {
+            $workday = new Werkdag($value["id"]);
+            $workday->date = $value["datum"];
+            $workday->sickHours = $value["ziek"];
+            $workday->daysOff = $value["vrij"];
+            $this->getTasksBy($value["id"], $workday);
+            // $this->getCommentsBy(['stageId' => $value["id"]], $internship);
 
-        foreach ($tagQuery as $row) {
-            $tag = new Tags($row[0]);
-            $tag->name = $row['1'];
+            return $workday;
+        }
+    }
+
+    public function getTasksBy($data, $workday)
+    {
+        $taskQuery = DB::join(["werkdag", "koppeltakenwerkdag"], ["id", "taakId"], ["koppeltakenwerkdag", "taken"], [["werkdagId", "*"], ["id", "id as taken_id"]], ["werkdag.id", $data]);
+        foreach ($taskQuery as $key => $value) {
+            $taak = new Taak($value["id"]);
+            $taak->tasks = $value["datum"];
+            $taak->hour = $value["ziek"];
+            $this->getTagsBy($value["taken_id"], $taak);
+            $workday->tasks[] = $taak;
+        }
+
+    }
+
+    public function getTagsBy($data, $taken)
+    {
+        $tagQuery = DB::join(["taken", "koppeltakentags"], ["id", "tagId"], ["koppeltakentags", "tags"], [["takenId", "*"], ["id", "id as tag_id, naam as naam"]], ["taken.id", $data]);
+        foreach ($tagQuery as $key => $value) {
+            $tag = new Tags($value["tag_id"]);
+            $tag->name = $value["naam"];
 
             $taken->tags[] = $tag;
         }
 
         return $taken->tags;
     }
-
 }
-

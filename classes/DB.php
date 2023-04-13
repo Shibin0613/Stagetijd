@@ -87,7 +87,7 @@ class DB
         }
 
         $query = "SELECT $table[0].$select $selects FROM $table[0] $joins WHERE $id[0] = :id";
-echo $query;
+// echo $query;
         $stmt = self::$pdo->prepare($query);
         $stmt->execute(['id' => $id[1]]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

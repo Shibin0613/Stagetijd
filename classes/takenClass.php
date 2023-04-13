@@ -1,5 +1,5 @@
 <?php
-class Taken {
+class Taak {
     public $id;
     public $tasks;
     public $hour;

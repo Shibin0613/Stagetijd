@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    
+
 </body>
+
 </html>
 
 <?php
@@ -73,10 +76,10 @@ $koppelTables = [
     ]
 ];
 $whereClauseMainTable = [
-    "taken.id", //de column waar je op filtert in de eerste main table
-    2 //de value van de eerste column waar je op filtert
+    [
+        "taken.id", //de column waar je op filtert in de eerste main table
+        2
+    ] //de value van de eerste column waar je op filtert
 ];
 
 $result4 = DB::join($mainTables[0], $mainTables[1], $koppelTables[0], $koppelTables[1], $whereClauseMainTable[0]);
-
-
