@@ -61,7 +61,7 @@ if (isset($_POST['verstuur'])) {
 			'role' => 1,
 			'activationcode' => uniqid(),
 		],
-	
+
 		[
 			'naam' => $_POST['naam_praktijkbegeleider'],
 			'email' => $_POST['email_praktijkbegeleider'],
@@ -72,6 +72,9 @@ if (isset($_POST['verstuur'])) {
 	$table = "users";
 	$praktijkbegeleiderID = DB::insert($table, $data);
 	$studentID = $praktijkbegeleiderID - 1;
+
+	$guidl = $data[0]['activationcode'];
+	$guidp = $data[1]['activationcode'];
 
 	$naaml = $_POST['naam_leerling'];
 	$emaill = $_POST['email_leerling'];
@@ -117,7 +120,7 @@ if (isset($_POST['verstuur'])) {
     $message .="Er is een stage aangemaakt. Voordat je kan inloggen moet je het eerste een wachtwoord aanmaken, dan wordt je account pas geactiveerd. "."<br/><br/>";
     $message .="Met onderstaande knop word je naar andere pagina gestuurd om je wachtwoord aan te maken."."<br/><br/>";
     //veranderen de url als de hele website later onlinestaat
-    $message .="<a href='localhost/stagetijd/pages/ActiveerAccount.php?activationcode=$guid'><button style='background-color:lime !important; box-shadow:0px 0px 2px 2px; border-radius:10px;'>Account activeren</button></a>"."<br/><br/>";
+    $message .="<a href='localhost/stagetijd/pages/ActiveerAccount.php?activationcode=$guidl'><button style='background-color:lime !important; box-shadow:0px 0px 2px 2px; border-radius:10px;'>Account activeren</button></a>"."<br/><br/>";
     $message .="Met vriendelijke groet, "."<br/>";
     $message .="<img src='https://lh3.googleusercontent.com/4CoybolZm3Xr1WNZbGPF_ZoUDR_Yn1NmWuo23yYHiZCdtkNm9GJKRQ5ugGJ5Y2zOWfSjGk5izMIDqh67=w378-h189-rw' style='width: 20%;'>";
     $message .="</body></html>";
@@ -137,7 +140,7 @@ if (isset($_POST['verstuur'])) {
     $message .="Er is een stage aangemaakt. Voordat je kan inloggen moet je het eerste een wachtwoord aanmaken, dan wordt je account pas geactiveerd. "."<br/><br/>";
     $message .="Met onderstaande knop word je naar andere pagina gestuurd om je wachtwoord aan te maken."."<br/><br/>";
     //veranderen de url als de hele website later onlinestaat
-    $message .="<a href='localhost/stagetijd/pages/ActiveerAccount.php?activationcode=$guid'><button style='background-color:lime !important; box-shadow:0px 0px 2px 2px; border-radius:10px;'>Account activeren</button></a>"."<br/><br/>";
+    $message .="<a href='localhost/stagetijd/pages/ActiveerAccount.php?activationcode=$guidp'><button style='background-color:lime !important; box-shadow:0px 0px 2px 2px; border-radius:10px;'>Account activeren</button></a>"."<br/><br/>";
     $message .="Met vriendelijke groet, "."<br/>";
     $message .="<img src='https://lh3.googleusercontent.com/4CoybolZm3Xr1WNZbGPF_ZoUDR_Yn1NmWuo23yYHiZCdtkNm9GJKRQ5ugGJ5Y2zOWfSjGk5izMIDqh67=w378-h189-rw' style='width: 20%;'>";
     $message .="</body></html>";
