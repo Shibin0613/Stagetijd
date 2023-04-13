@@ -1,7 +1,7 @@
 <?php
 class Taak {
     public $id;
-    public $tasks;
+    public $task;
     public $hour;
     public $tags = [];
 

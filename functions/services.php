@@ -97,13 +97,13 @@ class StudentServices extends Services
 
     public function getTasksBy($data, $workday)
     {
-        $taskQuery = DB::join(["werkdag", "koppeltakenwerkdag"], ["id", "taakId"], ["koppeltakenwerkdag", "taken"], [["werkdagId", "*"], ["id", "id as taken_id"]], ["werkdag.id", $data]);
+        $taskQuery = DB::join(["werkdag", "koppeltakenwerkdag"], ["id", "taakId"], ["koppeltakenwerkdag", "taken"], [["werkdagId", "*"], ["id", "id as taken_id, taak, uur"]], ["werkdag.id", $data]);
         foreach ($taskQuery as $key => $value) {
             $taak = new Taak($value["id"]);
-            $taak->tasks = $value["datum"];
+            $taak->task = $value["taak"];
             $taak->hour = $value["ziek"];
             $this->getTagsBy($value["taken_id"], $taak);
-            $workday->tasks[] = $taak;
+            $workday->task[] = $taak;
         }
 
     }
@@ -120,4 +120,18 @@ class StudentServices extends Services
 
         return $taken->tags;
     }
+}
+
+
+class LogService extends Services {
+
+    public function DayLoop($day)
+    {
+       foreach ($day->task as $key => $value) {
+        echo $value->task;
+        echo "<br>";
+       }
+    }
+
+
 }
