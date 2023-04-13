@@ -139,8 +139,23 @@ if(isset($_POST['inleveren'])){
     'taak' => $taken,
     'uur' => $uren,
   ];
-  $taakinsert = DB::insert($table, $data);
-   
+  
+  if($taakinsert = DB::insert($table, $data))
+  {
+    echo "<script>alert('Taak is toegevoegd')</script>";
+    ?>
+    <META HTTP-EQUIV="Refresh" CONTENT="0; URL=logboek.php">
+    <?php
+      //als het al bestaat, dan wordt de docent teruggestuurd naar de pagina met ingevulde 
+      //voornaam en achternaam, maar de email is dan leeg.
+    }else{
+      echo "<script>alert('Het is niet gelukt om een taak toe te voegen, probeer later opnieuw!')</script>";
+    ?>
+    <META HTTP-EQUIV="Refresh" CONTENT="0; URL=logboek.php">
+    <?php
+  }
+  
+
 
 
 }
