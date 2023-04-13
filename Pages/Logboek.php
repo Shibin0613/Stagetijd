@@ -21,10 +21,12 @@ include ("header.php");
 
     <form action="" method="POST">
       <p>Datum vandaag//later op hidden</p>
-      <input name="datum" id="myDateInput" readonly>
+      <input type="date" name="datum" id="myDateInput">
     </form>
     <?php
-    $datum = "2023-04-11";
+      $datum = $_POST['datum'];
+      $datum = "13-04-2023";
+      echo $datum;
     ?>
 
     <?php 
