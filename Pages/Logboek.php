@@ -22,13 +22,40 @@ include ("header.php");
     <?php 
     use Controllers\DB;
     ?>
+
+    <?php 
+    $table = "werkdag";
+    $data = [
+    
+    ];
+    $result = DB::select($table, $data);
+    if($result['datum'] = new DateTime()){
+    echo $result['id'];
+    }
+    ?>
   
     <?php
     $weeknummer = date('W');
     ?>
-    
-    <button type="button" data-toggle="modal" data-target="#myModal">Taak toevoegen</button>
 
+    <button type="button" data-toggle="modal" data-target="#myModal">Taak toevoegen</button>
+    <?php 
+    $table = "stage";
+    $data = [
+    'id' => "1",
+    ];
+    $result = DB::select($table, $data);
+    
+    if (isset($result[0]['startdatum'])){
+      $startdatum=strtotime($result[0]['startdatum']);
+      $einddatum=strtotime($result[0]['einddatum']);
+      $verschil = $einddatum-$startdatum;
+      $week = floor($verschil/(60*60*24*7));
+      echo $week;
+    }
+    
+    ?>
+    </table>
 
     <table>
         <tr>
@@ -44,9 +71,7 @@ include ("header.php");
           
           
             <td>
-            <?php
-            echo $weeknummer;
-            ?>
+            <?php echo $weeknummer; ?>
             </td>
             <td>asdasdad</td>
             <td>12313d</td>
@@ -65,20 +90,20 @@ include ("header.php");
       <div class="modal-content">
         <div class="modal-header">
         <h4 class="modal-title" id="emapleModalLabel">Taak toevoegen</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type='submit' name='ziek'>Ziek</button>
+        <button type='submit' name='vrij'>Vrij</button>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
 
           <form method='POST' action=''>
             <br>
             <p>Taak</p>
-            <textarea rows='4' cols='50' name='taken'>
-
-            </textarea>
+            <textarea rows='4' cols='50' name='taken'></textarea>
             <br>
             <p>Hoelang ben je daarmee bezig geweest?<br>
           </p>
-          <input type='number' name='uren' required> uren
+          <input type='number' name='uren' required max='8'> uren
           <br>
           <p>Tags</p>
           <select name='tags'>
@@ -110,7 +135,6 @@ include ("header.php");
       </div>
     </div>
 </div>
-
     
 </body>
 </html>
@@ -134,7 +158,23 @@ if(isset($_POST['inleveren'])){
   $tags = $_POST['tags'];
   $datum = $_POST['datum'];
 
-  $table = "taken";
+  //Insert naar werkdagtabel in een loop met aankomende 5 dagen
+  if(date('D', $timestamp) === 'Mon'){
+
+  $table = "werkdag";
+  $date = new DateTime();
+  for ($i = 0; $i < 5; $i++) { // loop 5 times
+    $data = [
+    'datum' => $date->format('Y-m-d'),
+    'ziek' => '0',
+    'vrij' => '0',
+  ];
+  $date->add(new DateInterval('P1D')); // add 1 day to the date
+  $werkdaginsert = DB::insert($table, $data);
+  }
+}
+
+$table = "taken";
   $data = [
     'taak' => $taken,
     'uur' => $uren,
@@ -144,7 +184,7 @@ if(isset($_POST['inleveren'])){
   {
     echo "<script>alert('Taak is toegevoegd')</script>";
     ?>
-    <META HTTP-EQUIV="Refresh" CONTENT="0; URL=logboek.php">
+    <!--<META HTTP-EQUIV="Refresh" CONTENT="0; URL=logboek.php">-->
     <?php
       //als het al bestaat, dan wordt de docent teruggestuurd naar de pagina met ingevulde 
       //voornaam en achternaam, maar de email is dan leeg.
@@ -154,9 +194,34 @@ if(isset($_POST['inleveren'])){
     <META HTTP-EQUIV="Refresh" CONTENT="0; URL=logboek.php">
     <?php
   }
+
+//Insert naar tabel taken
+$table = "taken"; //Welke table je insert
+$data = [
+];
+$result = DB::select($table, $data);
+$laatstetaakid = end($result)['id']; 
+
+//Insert naar koppeltabel takentags
+$table = "koppeltakentags";
+$data = [
+  'takenId' => $laatstetaakid,
+  'tagId' => $tags,
+];
+$taakinsert = DB::insert($table, $data);
+
+//insert koppeltabel takenwerkdag
+$table = "werkdag";
+$data = [
+
+];
+$result = DB::select($table, $data);
+
+
+$table="koppeltakenwerkdag";
+$data = [
+  'taakId' => $laatstetaakid,
+];
   
-
-
-
 }
 ?>
