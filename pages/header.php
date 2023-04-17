@@ -19,9 +19,29 @@ DB::connect();
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../Styles/style.css">
     <script src="https://kit.fontawesome.com/42b6daea05.js" crossorigin="anonymous"></script>
-    <title>Document</title>
+    <title>header</title>
 </head>
 <body>
     
+<header class="header">
+  <div class="header-container">
+    <!-- moet nog naar index gelinkt worden -->
+    <a href="#" class="logo">StageTijd</a>
+    <nav class="nav">
+      <ul class="nav-list">
+        <li class="nav-item"><a href="#">dit</a></li>
+        <li class="nav-item"><a href="#">zijn</a></li>
+        <li class="nav-item"><a href="#">goeie</a></li>
+        <li class="nav-item"><a href="#">items</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle navigation">
+      <span class="nav-toggle__bar"></span>
+      <span class="nav-toggle__bar"></span>
+      <span class="nav-toggle__bar"></span>
+    </button>
+  </div>
+</header>
+
 </body>
 </html>

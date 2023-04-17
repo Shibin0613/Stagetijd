@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 05 apr 2023 om 15:27
+-- Gegenereerd op: 13 apr 2023 om 14:18
 -- Serverversie: 10.4.27-MariaDB
 -- PHP-versie: 8.1.12
 
@@ -105,7 +105,10 @@ CREATE TABLE `stage` (
 --
 
 INSERT INTO `stage` (`id`, `bedrijf`, `praktijkbegeleiderId`, `studentId`, `startdatum`, `einddatum`, `active`) VALUES
-(3, 'kevin', 28, 27, '2023-04-15', '2023-04-30', 0);
+(3, 'kevin', 28, 27, '2023-04-15', '2023-04-30', 0),
+(4, 'kevin', 30, 29, '2023-04-21', '2023-04-30', 0),
+(5, 'jaaap', 31, 30, '2023-04-22', '2023-04-23', 0),
+(6, 'jaap', 33, 32, '2023-10-09', '2023-10-10', 0);
 
 -- --------------------------------------------------------
 
@@ -143,7 +146,7 @@ CREATE TABLE `users` (
   `wachtwoord` varchar(250) NOT NULL,
   `role` int(1) NOT NULL,
   `active` int(1) NOT NULL,
-  `activationcode` int(100) NOT NULL
+  `activationcode` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -151,15 +154,20 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `naam`, `email`, `wachtwoord`, `role`, `active`, `activationcode`) VALUES
-(1, 'kevin', 'kevinka1239@gmail.com', 'Kevinka1', 1, 1, 0),
-(21, 'Martijn', 'mn.graafsma@gmail.com', '', 1, 1, 64258),
-(22, 'kevin', 'kevinka1239@gmail.com', '', 0, 0, 0),
-(23, 'kevin', 'kevinka1239@gmail.com', '', 0, 0, 0),
-(24, 'kevin', 'kevinka1239@gmail.com', '', 0, 0, 0),
-(25, 'kevin', 'kevinka1239@gmail.com', '', 0, 0, 0),
-(26, 'kevin', 'kevinka1239@gmail.com', '', 0, 0, 0),
-(27, 'dinand', 'kevinka1239@gmail.com', '', 1, 0, 0),
-(28, 'maarten', 'tim@gmail.com', '', 2, 0, 0);
+(1, 'kevin', 'kevinka1239@gmail.com', 'Kevinka1', 1, 1, '0'),
+(21, 'Martijn', 'mn.graafsma@gmail.com', '', 1, 1, '64258'),
+(22, 'kevin', 'kevinka1239@gmail.com', '', 0, 0, '0'),
+(23, 'kevin', 'kevinka1239@gmail.com', '', 0, 0, '0'),
+(24, 'kevin', 'kevinka1239@gmail.com', '', 0, 0, '0'),
+(25, 'kevin', 'kevinka1239@gmail.com', '', 0, 0, '0'),
+(26, 'kevin', 'kevinka1239@gmail.com', '', 0, 0, '0'),
+(27, 'dinand', 'kevinka1239@gmail.com', '', 1, 0, '0'),
+(28, 'maarten', 'tim@gmail.com', '', 2, 0, '0'),
+(29, 'mark', 'kevinka1239@gmail.com', '', 1, 0, '2147483647'),
+(30, 'jelle', 'tim@gmail.com', '', 2, 0, '2147483647'),
+(31, 'daggoe', 'tim@gmail.com', '', 2, 0, '2147483647'),
+(32, 'kevin', 'kevinka1239@gmail.com', '', 1, 0, '2147483647'),
+(33, 'jelle', 'tim@gmail.com', '', 2, 0, '2147483647');
 
 -- --------------------------------------------------------
 
@@ -270,7 +278,7 @@ ALTER TABLE `opmerkingen`
 -- AUTO_INCREMENT voor een tabel `stage`
 --
 ALTER TABLE `stage`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT voor een tabel `tags`
@@ -288,7 +296,7 @@ ALTER TABLE `taken`
 -- AUTO_INCREMENT voor een tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT voor een tabel `werkdag`

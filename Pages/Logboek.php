@@ -19,45 +19,20 @@ include ("header.php");
     </head>
     <body>
 
-    <form action="" method="POST">
-      <p>Datum vandaag//later op hidden</p>
-      <input type="date" name="datum" id="myDateInput">
-    </form>
-    <?php
-      $datum = $_POST['datum'];
-      $datum = "13-04-2023";
-      echo $datum;
-    ?>
-
     <?php 
     use Controllers\DB;
-
-    $table = "stage";
-    $data = [
-    'id' => "1",
-    ];
-    
-    $result = DB::select($table, $data);
-    if (isset($result[0]['startdatum'])){
-      $startdatum=strtotime($result[0]['startdatum']);
-      $einddatum=strtotime($result[0]['einddatum']);
-      $verschil = $einddatum-$startdatum;
-      $week = floor($verschil/(60*60*24*7));
-      echo $week." weken";
-    }else
-    {
-
-    }
-    
     ?>
-
+  
+    <?php
+    $weeknummer = date('W');
+    ?>
     
     <button type="button" data-toggle="modal" data-target="#myModal">Taak toevoegen</button>
 
 
     <table>
         <tr>
-            <th>Weeknummber</th>
+            <th>Weeknummer</th>
             <th>Maandag</th>
             <th>Dinsdag</th>
             <th>Woensdag</th>
@@ -70,7 +45,7 @@ include ("header.php");
           
             <td>
             <?php
-            echo date("W", strtotime($datum));
+            echo $weeknummer;
             ?>
             </td>
             <td>asdasdad</td>
@@ -93,49 +68,41 @@ include ("header.php");
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
-            <?php
-                //  list($retro1,$retro2) = explode('!@#$%',$rr['rrtekst']);
-                echo "
-                <form method='POST' action=''>
-                    <br>
-                    <p>Taak<br>
-                    </p>
-                    <textarea rows='4' cols='50'>
-                    </textarea>
-                    <br>
-                    <p>Hoelang ben je daarmee bezig geweest?<br>
-                    </p>
-                    <input type='number' name='uren' required> uren
-                    <br>
-                    <p>Tags</p>
-                    <select name='tags'>
-                    </select>
-                    <button type='button' data-toggle='modal' data-target='#myModal'>Tags toevoegen</button>
-                    <p>Datum</p>
-                    <input type='text' value='".$datum."' readonly>
-                    <br>
-                    <br>
-                    <button type='submit' onclick='dailypopup()' name='dailyinlever'>Inleveren</button>
-                    
-                </form>
-                ";
 
-                $table = "tags";
-                $i = 0;
-                while ($i<4){
-                $data = [
-                  $i++,
-                  "id" => $i,
-                ];
-                $tagsresult = DB::select($table, $data);
-                ?>
-                <select>
-                <option>
-                  <?php echo $tagsresult[0]['naam']; 
-                  }
+          <form method='POST' action=''>
+            <br>
+            <p>Taak</p>
+            <textarea rows='4' cols='50' name='taken'>
+
+            </textarea>
+            <br>
+            <p>Hoelang ben je daarmee bezig geweest?<br>
+          </p>
+          <input type='number' name='uren' required> uren
+          <br>
+          <p>Tags</p>
+          <select name='tags'>
+            <?php
+            $table = "tags";
+            $data = [
+            ];
+            $tagsresult = DB::select($table, $data);
+                foreach($tagsresult as $result)
+                {
+                  $tagid = $result['id'];
+                  echo
+                  "<option value='$tagid'>".$result['naam']."</option>"
+                  ;}
                   ?>
-                </option> 
-              </select>
+          </select>
+          <button type='button' data-toggle='modal' data-target='#myModal'>Tags toevoegen</button>
+          <p>Datum</p>
+          <input type='date' name='datum' id='myDateInput' readonly>
+          <br>
+          <br>
+          <button type='submit' name='inleveren'>Inleveren</button>
+        </form>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -155,5 +122,41 @@ dateInput.value = today.toISOString().substr(0, 10);
 function checkdelete(){
   return confirm('Weet je zeker dat je deze daily willen verwijderen?');
 }
+var weeknummer = "<?php echo $weeknummer; ?>";
+document.getElementById("weeknummer").innerHTML = weeknummer;
 
 </script>
+
+<?php 
+if(isset($_POST['inleveren'])){
+  $taken = $_POST['taken'];
+  $uren = $_POST['uren'];
+  $tags = $_POST['tags'];
+  $datum = $_POST['datum'];
+
+  $table = "taken";
+  $data = [
+    'taak' => $taken,
+    'uur' => $uren,
+  ];
+  
+  if($taakinsert = DB::insert($table, $data))
+  {
+    echo "<script>alert('Taak is toegevoegd')</script>";
+    ?>
+    <META HTTP-EQUIV="Refresh" CONTENT="0; URL=logboek.php">
+    <?php
+      //als het al bestaat, dan wordt de docent teruggestuurd naar de pagina met ingevulde 
+      //voornaam en achternaam, maar de email is dan leeg.
+    }else{
+      echo "<script>alert('Het is niet gelukt om een taak toe te voegen, probeer later opnieuw!')</script>";
+    ?>
+    <META HTTP-EQUIV="Refresh" CONTENT="0; URL=logboek.php">
+    <?php
+  }
+  
+
+
+
+}
+?>
