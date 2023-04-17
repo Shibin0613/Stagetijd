@@ -7,6 +7,8 @@ class Stage {
     public $startDate;
     public $endDate;
     public $active;
+    public $logboek = [];
+
 
     function __construct($id) {
         $this->id = $id;

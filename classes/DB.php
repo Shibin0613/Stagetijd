@@ -9,9 +9,6 @@ class DB
 {
     private static PDO $pdo;
 
-
-
-
     public static function connect()
     {
         $host = "localhost";
@@ -28,16 +25,16 @@ class DB
     }
 
     // Selects data from a MySQL database table.
-    public static function select(string $table, array $data = [], $para = NULL): array
+    public static function select(string $table, array $data = []): array
     {
         // Get the number of elements in the array.
         $count = count($data);
 
         // Initialize a variable to hold the WHERE clause.
-        $where = 'WHERE ';
 
         // If there are multiple elements in the array, loop through them and construct the WHERE clause.
         if ($count > 1) {
+            $where = 'WHERE ';
             $teller = 1;
             foreach ($data as $k => $v) {
 
@@ -53,38 +50,52 @@ class DB
                 // Increment the counter.
                 $teller++;
             }
-        }
-        // If there is only one element in the array, construct the WHERE clause for it.
-        elseif ($count == 1) {
+        } elseif ($count == 1) {
+            $where = 'WHERE ';
             foreach ($data as $k => $v) {
                 $where .= ' ' . $k . ' = "' . $v . '"';
             }
-        }
-        // If there are no elements in the array, set the WHERE clause to an empty string.
-        else {
-            $where = '';
-        }
-
-        // Construct the SELECT query with the table name and WHERE clause.
-        if($para != NULL){
-            $data = self::join($para);
-            $query = "SELECT ".$data['select']." FROM ".$table .$data['join'] .$data['on'] .$where;
-        }else{
+        }   
             $query = "SELECT * FROM $table $where";
-        }
         // Prepare the query statement.
         $stmt = self::$pdo->prepare($query);
 
         // Execute the query.
         $stmt->execute();
 
+
         // Return the selected rows as an array of associative arrays.
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);// object
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); // object
     }
-    private static function join($para){
-        // gebruik para om onderstaande aan te passen
-        return $array = ['select' => 'a', 'join' => 'join', 'on' => 'on'];
+        public static function join($mainTable, $col, $joinTables, array $joinCols, $id)
+    {
+        $table = $mainTable;
+        $select = '*';
+
+        $joins = '';
+        $selects = '';
+
+        if (!is_array($joinTables)) {
+            $joinTables = [$joinTables];
+            $col = [$col];
+            $joinCols = [$joinCols];
+        }
+
+        foreach ($joinTables as $key => $joinTable) {
+            $joins .= " JOIN $joinTable ON $table[$key].$col[$key] = $joinTable." . $joinCols[$key][0];
+            $selects .= ", $joinTable." . $joinCols[$key][1];
+        }
+
+        $query = "SELECT $table[0].$select $selects FROM $table[0] $joins WHERE $id[0] = :id";
+// echo $query;
+        $stmt = self::$pdo->prepare($query);
+        $stmt->execute(['id' => $id[1]]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+        // return self::select($table, ['id' => $id[1]], $query);
     }
+    
     // Inserts data into a MySQL database table.
     public static function insert(string $table, array $data = []) #:  int
     {
@@ -176,6 +187,6 @@ class DB
     public static function delete(string $query, array $params = [])
     {
         $stmt = self::$pdo->prepare($query);
-        $stmt->execute($params);    
+        $stmt->execute($params);
     }
 }
