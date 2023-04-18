@@ -29,12 +29,14 @@ $internship = $user->internship[$internshipFilter];
     <title>Logboek</title>
 </head>
 <?php if (isset($_GET["id"])) :
-    #$logService->ReturnTasksByDayId($internship, intval($_GET["id"]));
-    echo $internship->company;
-    echo "<br>";
-    $totalHours = $logService->ReturnTotalWorkHours($internship);
-    echo $totalHours."/800";
+    $logService->ReturnTasksByDayId($internship, intval($_GET["id"]));
 endif; ?>
+<?php
+echo $internship->company;
+echo "<br>";
+$totalHours = $logService->ReturnTotalWorkHours($internship);
+echo $totalHours."/800";
+?>
 
 <body>
     <table>
