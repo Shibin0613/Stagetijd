@@ -28,7 +28,7 @@ DB::connect();
     <a href="#" class="logo">StageTijd</a>
     <nav class="nav">
       <ul class="nav-list">
-        <li class="nav-item"><a href="#">dit</a></li>
+        <li class="nav-item"><a href="#">home</a></li>
         <li class="nav-item"><a href="#">zijn</a></li>
         <li class="nav-item"><a href="#">goeie</a></li>
         <li class="nav-item"><a href="#">items</a></li>

@@ -26,8 +26,6 @@
 
 <?php
 
-include "header.php";
-
 use Controllers\DB;
 
 if (isset($_POST['submit'])) {
