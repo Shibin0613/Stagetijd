@@ -14,7 +14,7 @@ $studentService = new StudentServices();
 $logService = new LogService();
 
 //Get user info, internship info, log info, task info, tag info and comments that are connected to the user.
-$user = $studentService->getUserBy(['id' => 36,]);
+$user = $studentService->getUserBy(['id' => $_GET['Userid'],]);
 
 //Defines which log needs to be shown depending on the internship
 $internshipFilter = 0;
@@ -82,11 +82,11 @@ $weeknummer = date('W');
     <?php foreach ($internship->logboek as $key => $value) : ?>
       <tr>
         <td><?= $value->weekNumber ?></td>
-        <td><a href="logboek.php?id=<?= $value->monday->id ?>">Maandag</td>
-        <td><a href="logboek.php?id=<?= $value->tuesday->id ?>">Dinsdag</td>
-        <td><a href="logboek.php?id=<?= $value->wednesday->id ?>">Woensdag</td>
-        <td><a href="logboek.php?id=<?= $value->thursday->id ?>">Donderdag</td>
-        <td><a href="logboek.php?id=<?= $value->friday->id ?>">Vrijdag</td>
+        <td><a href="logboek.php?id=<?= $value->monday->id ?>&Userid=<?=$_GET['Userid']?>">Maandag</td>
+        <td><a href="logboek.php?id=<?= $value->tuesday->id ?>&Userid=<?=$_GET['Userid']?>">Dinsdag</td>
+        <td><a href="logboek.php?id=<?= $value->wednesday->id ?>&Userid=<?=$_GET['Userid']?>">Woensdag</td>
+        <td><a href="logboek.php?id=<?= $value->thursday->id ?>&Userid=<?=$_GET['Userid']?>">Donderdag</td>
+        <td><a href="logboek.php?id=<?= $value->friday->id ?>&Userid=<?=$_GET['Userid']?>">Vrijdag</td>
         <td>Uren</td>
         <?php switch ($value->approved) {
           case 0:

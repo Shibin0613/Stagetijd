@@ -19,7 +19,7 @@ $table = "users";
 $active_filter = isset($_POST['active_filter']) ? $_POST['active_filter'] : "1";
 $data = [
     'active' => $active_filter,
-    'role' => 1,
+    'role' => 2,
 ];
 $result = DB::select($table, $data);
 
@@ -40,7 +40,7 @@ $result = DB::select($table, $data);
 
         if ($result) {
             foreach ($result as $row) {
-                echo '<a href="docentenOverzicht.php?id=' . $row['id'] . '"><div class="StudentenOverzicht">' . $row['naam'] . '</div></a>';
+                echo '<a href="logboek.php?Userid=' . $row['id'] . '"><div class="StudentenOverzicht">' . $row['naam'] . '</div></a>';
             }
         } else {
             echo "No users found.";
