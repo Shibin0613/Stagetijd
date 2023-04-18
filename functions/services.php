@@ -101,9 +101,9 @@ class StudentServices extends Services
         foreach ($taskQuery as $key => $value) {
             $taak = new Taak($value["id"]);
             $taak->task = $value["taak"];
-            $taak->hour = $value["ziek"];
+            $taak->hour = $value["uur"];
             $this->getTagsBy($value["taken_id"], $taak);
-            $workday->task[] = $taak;
+            $workday->tasks[] = $taak;
         }
 
     }
@@ -131,6 +131,75 @@ class LogService extends Services {
         echo $value->task;
         echo "<br>";
        }
+    }
+
+    public function ReturnTasksByDayId($internship, $id) {
+        foreach ($internship->logboek as $key => $log) :
+            if ($log->monday->id === $id) :
+                foreach ($log->monday->tasks as $key => $task) :
+                    echo $task->task;
+                    echo "<br>";
+                endforeach;
+                break;
+            elseif ($log->tuesday->id === $id) :
+                foreach ($log->tuesday->tasks as $key => $task) :
+                    echo $task->task;
+                    echo "<br>";
+                endforeach;
+                break;
+            elseif ($log->wednesday->id === $id) :
+                foreach ($log->wednesday->tasks as $key => $task) :
+                    echo $task->task;
+                    echo "<br>";
+                endforeach;
+                break;
+            elseif ($log->thursday->id === $id) :
+                foreach ($log->thursday->tasks as $key => $task) :
+                    echo $task->task;
+                    echo "<br>";
+                endforeach;
+                break;
+            elseif ($log->friday->id === $id) :
+                foreach ($log->friday->tasks as $key => $task) :
+                    echo $task->task;
+                    echo "<br>";
+                endforeach;
+                break;
+            else:
+                echo "Er is geen geldig ID";
+            endif;
+        endforeach;
+    }
+
+    public function ReturnTotalWorkHours($internship) {
+        $Totalhour = 0;
+        foreach ($internship->logboek as $key => $log) :
+                foreach ($log->monday->tasks as $key => $task) :
+                    $Totalhour += $task->hour;
+                endforeach;
+                
+                foreach ($log->tuesday->tasks as $key => $task) :
+                    $Totalhour += $task->hour;
+                
+                endforeach;
+                
+                foreach ($log->wednesday->tasks as $key => $task) :
+                    $Totalhour += $task->hour;
+                    
+                endforeach;
+                
+                foreach ($log->thursday->tasks as $key => $task) :
+                    $Totalhour += $task->hour;
+                
+                endforeach;
+                
+                foreach ($log->friday->tasks as $key => $task) :
+                    $Totalhour += $task->hour;
+                    
+                endforeach;
+                
+        endforeach;
+    return $Totalhour;
     }
 
 

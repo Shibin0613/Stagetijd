@@ -1,7 +1,6 @@
 <?php
-//Incluse the required files
+//Include the required files
 include('../functions/services.php');
-include "header.php";
 
 //Makes it able to use the functions inside the services
 $studentService = new StudentServices();
@@ -15,12 +14,13 @@ $internshipFilter = 0;
 
 //Gets the internship object from the filter.
 $internship = $user->internship[$internshipFilter];
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<? if (isset($_GET['id'])) : ?>
-    
-<? endif ?>
+
+
 
 <head>
     <meta charset="UTF-8">
@@ -28,6 +28,13 @@ $internship = $user->internship[$internshipFilter];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logboek</title>
 </head>
+<?php if (isset($_GET["id"])) :
+    #$logService->ReturnTasksByDayId($internship, intval($_GET["id"]));
+    echo $internship->company;
+    echo "<br>";
+    $totalHours = $logService->ReturnTotalWorkHours($internship);
+    echo $totalHours."/800";
+endif; ?>
 
 <body>
     <table>
@@ -45,9 +52,9 @@ $internship = $user->internship[$internshipFilter];
                 <td><?= $value->weekNumber ?></td>
                 <td><a href="ToBeDeleted.php?id=<?= $value->monday->id ?>">Maandag</td>
                 <td><a href="ToBeDeleted.php?id=<?= $value->tuesday->id ?>">Dinsdag</td>
-                <td><a href="ToBeDeleted.php?id=<?= $value->wednesday->id ?>">wednesday</td>
-                <td><a href="ToBeDeleted.php?id=<?= $value->thursday->id ?>">thursday</td>
-                <td><a href="ToBeDeleted.php?id=<?= $value->friday->id ?>">friday</td>
+                <td><a href="ToBeDeleted.php?id=<?= $value->wednesday->id ?>">Woensdag</td>
+                <td><a href="ToBeDeleted.php?id=<?= $value->thursday->id ?>">Donderdag</td>
+                <td><a href="ToBeDeleted.php?id=<?= $value->friday->id ?>">Vrijdag</td>
                 <?php switch ($value->approved) {
                     case 0:
                         echo "<td> Niet goedgekeurd</td>";
@@ -58,9 +65,10 @@ $internship = $user->internship[$internshipFilter];
                     default:
                         echo "<td> Er is iets mis gegaan.</td>";
                         break;
-                }?>
+                } ?>
             </tr>
         <?php endforeach ?>
     </table>
 </body>
+
 </html>
