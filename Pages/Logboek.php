@@ -37,6 +37,54 @@ $weeknummer = date('W');
 </head>
 
 <body>
+
+  <?php 
+  $table = "logboek";
+  $data = [];
+  $where = ""; 
+  $result = DB::select($table, $data, $where);
+  $weeknrfromdatabase = end($result)['weeknummer'];
+  //Insert naar werkdagtabel in een loop met aankomende 5 dagen als het weer maandag is
+
+  if ($weeknrfromdatabase != $weeknummer) {
+
+    $table = "werkdag";
+    $date = new DateTime();
+    for ($i = 0; $i < 5; $i++) { // loop 5 times
+      $data = [
+        'datum' => $date->format('Y-m-d'),
+        'ziek' => '0',
+        'vrij' => '0',
+      ];
+      $date->add(new DateInterval('P1D')); // add 1 day to the date
+      $werkdaginsert = DB::insert($table, $data);
+    }
+    //Vanuit database de werkdag uit om in koppeltabel Logboek te inserten
+    $table = "werkdag";
+    $data = [];
+    $result = DB::select($table, $data);
+    $laatstewerkdagid = end($result)['id'];
+    $tweedelaatstewerkdagid = (end($result)['id']) - 1;
+    $derdelaatstewerkdagid = (end($result)['id']) - 2;
+    $vierdelaatstewerkdagid = (end($result)['id']) - 3;
+    $vijfdelaatstewerkdagid = (end($result)['id']) - 4;
+
+
+    $table = "logboek";
+    $data = [
+      'stageId' => '9',
+      'weeknummer' => $weeknummer,
+      'maandagId' => $vijfdelaatstewerkdagid,
+      'dinsdagId' => $vierdelaatstewerkdagid,
+      'woensdagId' => $derdelaatstewerkdagid,
+      'donderdagId' => $tweedelaatstewerkdagid,
+      'vrijdagId' => $laatstewerkdagid,
+    ];
+    $result = DB::insert($table, $data);
+  }
+
+
+  ?>
   <?php if (isset($_GET["id"])) :
     $logService->ReturnTasksByDayId($internship, intval($_GET["id"])); ?>
     <button type="button" data-toggle="modal" data-target="#myModal">Taak toevoegen</button>
@@ -46,25 +94,11 @@ $weeknummer = date('W');
   echo "<br>";
   $totalHours = $logService->ReturnTotalWorkHours($internship);
   echo $totalHours . "/800";
+  
   ?>
-
-  <?php
-  $table = "stage";
-  $data = [
-    'id' => "1",
-  ];
-  $result = DB::select($table, $data);
-
-  if (isset($result[0]['startdatum'])) {
-    $startdatum = strtotime($result[0]['startdatum']);
-    $einddatum = strtotime($result[0]['einddatum']);
-    $verschil = $einddatum - $startdatum;
-    $week = floor($verschil / (60 * 60 * 24 * 7));
-    echo $week;
-  }
-
-  ?>
-  </table>
+  <div class="progress" role="progressbar" aria-label="Success example" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar bg-success" style="width: <?php echo $percentageHours = $totalHours/800*100;?>%"><?php echo $percentageHours;?>%</div>
+  </div>
 
   <table>
     <thead>
@@ -139,7 +173,7 @@ $weeknummer = date('W');
               }
               ?>
             </select>
-            <button type='button' data-toggle='modal' data-target='#myModal'>Tags toevoegen</button>
+            <button type="submit"><a href="TagsOverzicht.php">Tags</a></button>
             <p>Datum</p>
             <input type='date' name='datum' id='myDateInput' readonly>
             <br>
@@ -177,48 +211,6 @@ if (isset($_POST['inleveren'])) {
   $tags = $_POST['tags'];
   $datum = $_POST['datum'];
 
-  $table = "logboek";
-  $data = [];
-  $result = DB::select($table, $data);
-  $weeknrfromdatabase = end($result)['weeknummer'];
-  //Insert naar werkdagtabel in een loop met aankomende 5 dagen als het weer maandag is
-
-  if (date('D', $timestamp) === 'Mon') {
-
-    $table = "werkdag";
-    $date = new DateTime();
-    for ($i = 0; $i < 5; $i++) { // loop 5 times
-      $data = [
-        'datum' => $date->format('Y-m-d'),
-        'ziek' => '0',
-        'vrij' => '0',
-      ];
-      $date->add(new DateInterval('P1D')); // add 1 day to the date
-      $werkdaginsert = DB::insert($table, $data);
-    }
-    //Vanuit database de werkdag uit om in koppeltabel Logboek te inserten
-    $table = "werkdag";
-    $data = [];
-    $result = DB::select($table, $data);
-    $laatstewerkdagid = end($result)['id'];
-    $tweedelaatstewerkdagid = (end($result)['id']) - 1;
-    $derdelaatstewerkdagid = (end($result)['id']) - 2;
-    $vierdelaatstewerkdagid = (end($result)['id']) - 3;
-    $vijfdelaatstewerkdagid = (end($result)['id']) - 4;
-
-
-    $table = "logboek";
-    $data = [
-      'stageId' => '9',
-      'weeknummer' => $weeknummer,
-      'maandagId' => $vijfdelaatstewerkdagid,
-      'dinsdagId' => $vierdelaatstewerkdagid,
-      'woensdagId' => $derdelaatstewerkdagid,
-      'donderdagId' => $tweedelaatstewerkdagid,
-      'vrijdagId' => $laatstewerkdagid,
-    ];
-    $result = DB::insert($table, $data);
-  }
 
   $table = "taken";
   $data = [
@@ -270,5 +262,7 @@ if (isset($_POST['inleveren'])) {
     'werkdagId' => $werkdagidoftoday,
   ];
   $result = DB::insert($table, $data);
+
+  
 }
 ?>

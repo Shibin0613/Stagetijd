@@ -28,9 +28,6 @@ $activationcode = $_GET['activationcode'];
     <br/><br/>
     <center><h4>Account activeren</h4><br/>
     <div class="form-group">
-    <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-        <div class="progress-bar bg-success" style="width: 50%"><?php 50/100?></div>
-    </div>
     <form action="" method="POST">
     <?php
         use Controllers\DB;
