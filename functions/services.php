@@ -170,8 +170,6 @@ class LogService extends Services {
                     echo "<br>";
                 endforeach;
                 break;
-            else:
-                echo "Er is zijn geen taken voor deze dag";
             endif;
         endforeach;
     }
