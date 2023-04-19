@@ -237,14 +237,12 @@ if (isset($_POST['inleveren'])) {
   //haal vanuit de database taken id waar je net de taak hebt toegevoegd. 
   $takentable = "taken"; //Welke table je insert
   $takendata = [];
-  $result = DB::select($table, $data);
+  $result = DB::select($takentable, $takendata);
   $laatstetaakid = end($result)['id'];
 
-
-
+  
   //voegtoe naar koppeltabel takentags
   $tags = $_POST['tags'];
-
   $koppeltakentagstable = "koppeltakentags";
   $koppeltakentagsdata = [
     'takenId' => $laatstetaakid,
@@ -257,11 +255,11 @@ if (isset($_POST['inleveren'])) {
   
   
   //voegtoe naar koppeltakenwerkdag
-  $today = date('Y-m-d');
+  $today = $_GET['id'];
   $werkdagtable = "werkdag";
   $werkdagdata = [];
   $result = DB::select($werkdagtable, $werkdagdata);
-  $check = array_search($today, array_column($result, 'datum'));
+  $check = array_search($today, array_column($result, 'id'));
   $werkdagidoftoday = $result[$check]['id'];
 
 

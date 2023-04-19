@@ -125,7 +125,6 @@ $where = '';
                     // Increment the counter.
                     $teller++;
                 }
-
                 $query = "INSERT INTO $table ($columns) VALUES ($values)";
                 // echo $query;
                 // Prepare the query statement.
@@ -133,6 +132,7 @@ $where = '';
                 $columns = '';
                 $values = '';
                 $teller = 1;
+
 
                 // Execute the query with the array of values.
                 $stmt->execute($array);
@@ -161,7 +161,7 @@ $where = '';
             // echo $query;
             // Prepare the query statement.
             $stmt = self::$pdo->prepare($query);
-
+// var_dump($query);
             // Execute the query with the array of values.
             $stmt->execute($array);
         }
