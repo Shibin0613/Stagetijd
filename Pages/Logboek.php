@@ -6,6 +6,7 @@ Open the html file with a web browser
 -->
 
 <?php
+
 //Include the required files
 include('../functions/services.php');
 
@@ -14,7 +15,7 @@ $studentService = new StudentServices();
 $logService = new LogService();
 
 //Get user info, internship info, log info, task info, tag info and comments that are connected to the user.
-$user = $studentService->getUserBy(['id' => $_GET['Userid'],]);
+$user = $studentService->getUserBy(['id' => $_SESSION['userId']]);
 
 //Defines which log needs to be shown depending on the internship
 $internshipFilter = 0;
@@ -41,8 +42,7 @@ $weeknummer = date('W');
   <?php 
   $table = "logboek";
   $data = [];
-  $where = ""; 
-  $result = DB::select($table, $data, $where);
+  $result = DB::select($table, $data);
   $weeknrfromdatabase = end($result)['weeknummer'];
   //Insert naar werkdagtabel in een loop met aankomende 5 dagen als het weer maandag is
 
@@ -72,7 +72,7 @@ $weeknummer = date('W');
 
     $table = "logboek";
     $data = [
-      'stageId' => '9',
+      'stageId' => $user->internship->id,
       'weeknummer' => $weeknummer,
       'maandagId' => $vijfdelaatstewerkdagid,
       'dinsdagId' => $vierdelaatstewerkdagid,
@@ -116,11 +116,11 @@ $weeknummer = date('W');
     <?php foreach ($internship->logboek as $key => $value) : ?>
       <tr>
         <td><?= $value->weekNumber ?></td>
-        <td><a href="logboek.php?id=<?= $value->monday->id ?>&Userid=<?=$_GET['Userid']?>">Maandag</td>
-        <td><a href="logboek.php?id=<?= $value->tuesday->id ?>&Userid=<?=$_GET['Userid']?>">Dinsdag</td>
-        <td><a href="logboek.php?id=<?= $value->wednesday->id ?>&Userid=<?=$_GET['Userid']?>">Woensdag</td>
-        <td><a href="logboek.php?id=<?= $value->thursday->id ?>&Userid=<?=$_GET['Userid']?>">Donderdag</td>
-        <td><a href="logboek.php?id=<?= $value->friday->id ?>&Userid=<?=$_GET['Userid']?>">Vrijdag</td>
+        <td><a href="logboek.php?id=<?= $value->monday->id ?>">Maandag</td>
+        <td><a href="logboek.php?id=<?= $value->tuesday->id ?>">Dinsdag</td>
+        <td><a href="logboek.php?id=<?= $value->wednesday->id ?>">Woensdag</td>
+        <td><a href="logboek.php?id=<?= $value->thursday->id ?>">Donderdag</td>
+        <td><a href="logboek.php?id=<?= $value->friday->id ?>">Vrijdag</td>
         <td>Uren</td>
         <?php switch ($value->approved) {
           case 0:
@@ -218,8 +218,7 @@ if (isset($_POST['inleveren'])) {
   ];
 
   if ($taakinsert = DB::insert($table, $data)) {
-    echo "<script>alert('Taak is toegevoegd')</script>";
-?>
+    echo "<script>alert('Taak is toegevoegd')</script>";?>
     <META HTTP-EQUIV="Refresh" CONTENT="0; URL=logboek.php">
   <?php
     //als het al bestaat, dan wordt de docent teruggestuurd naar de pagina met ingevulde 
@@ -239,11 +238,11 @@ if (isset($_POST['inleveren'])) {
 
   //Insert naar koppeltabel takentags
   $table = "koppeltakentags";
-  $data = [
+  $koppeltakentagsdata = [
     'takenId' => $laatstetaakid,
     'tagId' => $tags,
   ];
-  $taakinsert = DB::insert($table, $data);
+  $taakinsert = DB::insert($table, $koppeltakentagsdata);
 
 
   //Insert naar koppeltakenwerkdag

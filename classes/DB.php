@@ -31,7 +31,7 @@ class DB
         $count = count($data);
 
         // Initialize a variable to hold the WHERE clause.
-
+$where = '';
         // If there are multiple elements in the array, loop through them and construct the WHERE clause.
         if ($count > 1) {
             $where = 'WHERE ';
@@ -59,7 +59,6 @@ class DB
             $query = "SELECT * FROM $table $where";
         // Prepare the query statement.
         $stmt = self::$pdo->prepare($query);
-
         // Execute the query.
         $stmt->execute();
 

@@ -135,7 +135,7 @@ class LogService extends Services {
 
     public function createLogboek()
     {
-        
+
     }
 
     public function ReturnTasksByDayId($internship, $id) {
@@ -171,7 +171,7 @@ class LogService extends Services {
                 endforeach;
                 break;
             else:
-                echo "Er is geen geldig ID";
+                echo "Er is zijn geen taken voor deze dag";
             endif;
         endforeach;
     }

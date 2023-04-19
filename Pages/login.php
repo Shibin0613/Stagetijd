@@ -70,23 +70,22 @@
 
 
 <?php
+
 require_once "../vendor/autoload.php";
-
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-  $data = [
-		[
-			'email' => $_POST['email'],
-			'wachtwoord' => $_POST['wachtwoord'],
-    ]
-    ];
-    header("location:stageaanmaken.php");
-
-    // if ($active == 1) {
-    //   header("location:stageaanmaken.php");
-    // }
-    // // else 
-    // //   echo '<script>alert("uw account is nog niet geactiveerd check uw mail")</script>',
-    
+use Controllers\DB;
+DB::connect();
+if ($_SERVER["REQUEST_METHOD"] === "POST" && $_POST['email'] !== null && $_POST['wachtwoord'] !== null) {
+  
+  $user = DB::select('users', ['email' => $_POST['email'], 'wachtwoord' => $_POST['wachtwoord']]);
+  
+  if ($user && $user[0]["active"] == 1) {
+    session_start();
+    $_SESSION['userId'] = $user[0]["id"];
+    $_SESSION['role'] = $user[0]["role"];
+    header("location:home.php");
+  } else {
+    echo '<script>alert("uw account is nog niet geactiveerd, bestaat niet of gegevens kloppen niet.")</script>';
+  }
   }
 
 
