@@ -10,7 +10,7 @@
     
     <div class='container m-5'>
     <form  class='docentToevoegen' method='POST' action=''>
-    <h3 class='Docenth3'>Docent toevoegen</h3>
+    <h3 class='Docenth3'><center>Tagsoverzicht</center></h3>
     <?php
     $table = "tags";
     $data = [];
