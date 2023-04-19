@@ -72,7 +72,7 @@ $weeknummer = date('W');
 
     $table = "logboek";
     $data = [
-      'stageId' => $user->internship->id,
+      'stageId' => $internship->id,
       'weeknummer' => $weeknummer,
       'maandagId' => $vijfdelaatstewerkdagid,
       'dinsdagId' => $vierdelaatstewerkdagid,
@@ -206,13 +206,13 @@ $weeknummer = date('W');
 
 <?php
 if (isset($_POST['inleveren'])) {
-  $taken = $_POST['taken'];
-  $uren = $_POST['uren'];
-  $tags = $_POST['tags'];
-
-
+  
+  
   
   //voegtoe in tabel taken 
+  $taken = $_POST['taken'];
+  $uren = $_POST['uren'];
+  
   $takentable = "taken";
   $takendata = [
     'taak' => $taken,
@@ -221,7 +221,7 @@ if (isset($_POST['inleveren'])) {
   //als het gelukt is, alert taak is toegevoegd
   if ($taakinsert = DB::insert($takentable, $takendata)) {
     echo "<script>alert('Taak is toegevoegd')</script>";
-?>
+    ?>
     <META HTTP-EQUIV="Refresh" CONTENT="0; URL=logboek.php">
   <?php
   } else {
@@ -243,6 +243,8 @@ if (isset($_POST['inleveren'])) {
 
 
   //voegtoe naar koppeltabel takentags
+  $tags = $_POST['tags'];
+
   $koppeltakentagstable = "koppeltakentags";
   $koppeltakentagsdata = [
     'takenId' => $laatstetaakid,

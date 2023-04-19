@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 19 apr 2023 om 15:12
--- Serverversie: 10.4.22-MariaDB
--- PHP-versie: 8.1.2
+-- Gegenereerd op: 19 apr 2023 om 15:49
+-- Serverversie: 10.4.24-MariaDB
+-- PHP-versie: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -32,6 +32,22 @@ CREATE TABLE `koppeltakentags` (
   `tagId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Gegevens worden geÃ«xporteerd voor tabel `koppeltakentags`
+--
+
+INSERT INTO `koppeltakentags` (`takenId`, `tagId`) VALUES
+(38, 1),
+(39, 1),
+(39, 2),
+(42, 2),
+(43, 2),
+(44, 1),
+(45, 1),
+(46, 2),
+(47, 2),
+(47, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -44,15 +60,18 @@ CREATE TABLE `koppeltakenwerkdag` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geëxporteerd voor tabel `koppeltakenwerkdag`
+-- Gegevens worden geÃ«xporteerd voor tabel `koppeltakenwerkdag`
 --
 
 INSERT INTO `koppeltakenwerkdag` (`taakId`, `werkdagId`) VALUES
-(43, 32),
-(44, 32),
-(45, 32),
-(46, 32),
-(47, 32);
+(47, 35),
+(38, 31),
+(39, 31),
+(42, 32),
+(43, 33),
+(44, 33),
+(45, 33),
+(46, 34);
 
 -- --------------------------------------------------------
 
@@ -84,13 +103,12 @@ CREATE TABLE `logboek` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geëxporteerd voor tabel `logboek`
+-- Gegevens worden geÃ«xporteerd voor tabel `logboek`
 --
 
 INSERT INTO `logboek` (`id`, `stageId`, `weeknummer`, `maandagId`, `dinsdagId`, `woensdagId`, `donderdagId`, `vrijdagId`, `goedgekeurd`) VALUES
-(1, 9, 14, 1, 2, 1, 1, 1, 0),
 (2, 9, 15, 31, 32, 33, 34, 35, 0),
-(17, 9, 16, 51, 52, 53, 54, 55, 0);
+(20, 9, 16, 71, 72, 73, 74, 75, 0);
 
 -- --------------------------------------------------------
 
@@ -121,11 +139,11 @@ CREATE TABLE `stage` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geëxporteerd voor tabel `stage`
+-- Gegevens worden geÃ«xporteerd voor tabel `stage`
 --
 
 INSERT INTO `stage` (`id`, `bedrijf`, `praktijkbegeleiderId`, `studentId`, `startdatum`, `einddatum`, `active`) VALUES
-(9, 'jazeker', 50, 49, '2023-04-13', '2023-04-27', 1);
+(9, 'jazeker', 50, 48, '2023-04-13', '2023-04-27', 1);
 
 -- --------------------------------------------------------
 
@@ -140,12 +158,12 @@ CREATE TABLE `tags` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geëxporteerd voor tabel `tags`
+-- Gegevens worden geÃ«xporteerd voor tabel `tags`
 --
 
 INSERT INTO `tags` (`id`, `naam`, `userid`) VALUES
-(1, 'Programmeren', 1),
-(2, 'Schoolopdracht', 1);
+(1, 'Programmeren', 48),
+(2, 'Schoolopdracht', 48);
 
 -- --------------------------------------------------------
 
@@ -160,18 +178,18 @@ CREATE TABLE `taken` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geëxporteerd voor tabel `taken`
+-- Gegevens worden geÃ«xporteerd voor tabel `taken`
 --
 
 INSERT INTO `taken` (`id`, `taak`, `uur`) VALUES
-(38, 'asdsad', 6),
-(39, '12312132', 5),
-(42, 'ik heb iets gedaan', 3),
-(43, 'ik heb weer iets gedaan', 4),
-(44, 'test', 4),
-(45, 'testtje', 4),
-(46, 'asads', 3),
-(47, 'asdsada', 3);
+(38, 'Taak 1', 6),
+(39, 'Taak 2', 5),
+(42, 'Taak 3', 3),
+(43, 'Taak 4', 4),
+(44, 'Taak 5', 4),
+(45, 'Taak 6', 4),
+(46, 'Taak 7', 3),
+(47, 'Taak 8', 3);
 
 -- --------------------------------------------------------
 
@@ -190,15 +208,13 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geëxporteerd voor tabel `users`
+-- Gegevens worden geÃ«xporteerd voor tabel `users`
 --
 
 INSERT INTO `users` (`id`, `naam`, `email`, `wachtwoord`, `role`, `active`, `activationcode`) VALUES
 (1, 'kevin', 'kevinka1239@gmail.com', 'Kevinka1', 1, 1, '0'),
-(21, 'Martijn', 'mn.graafsma@gmail.com', '', 1, 1, '64258'),
 (48, 'Shibin', 'panshibin2000@gmail.com', '123456', 2, 1, '6437fcf5782ea'),
-(49, 'shibin', 'panshibin2000@gmail.com', '', 1, 0, '6437fdc797915'),
-(50, 'jazekerasd', 'shibinpan2000@gmail.com', '', 2, 0, '6437fdc797918check');
+(50, 'Jelle', 'Jelle@gmail.com', 'Test123', 3, 1, '6437fdc797918check');
 
 -- --------------------------------------------------------
 
@@ -214,30 +230,28 @@ CREATE TABLE `werkdag` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geëxporteerd voor tabel `werkdag`
+-- Gegevens worden geÃ«xporteerd voor tabel `werkdag`
 --
 
 INSERT INTO `werkdag` (`id`, `datum`, `ziek`, `vrij`) VALUES
-(1, '2023-04-17', 0, 0),
-(2, '2023-04-17', 0, 0),
 (31, '2023-04-17', 0, 0),
 (32, '2023-04-18', 0, 0),
 (33, '2023-04-19', 0, 0),
 (34, '2023-04-20', 0, 0),
 (35, '2023-04-21', 0, 0),
-(51, '2023-04-18', 0, 0),
-(52, '2023-04-19', 0, 0),
-(53, '2023-04-20', 0, 0),
-(54, '2023-04-21', 0, 0),
-(55, '2023-04-22', 0, 0),
-(61, '2023-04-18', 0, 0),
-(62, '2023-04-19', 0, 0),
-(63, '2023-04-20', 0, 0),
-(64, '2023-04-21', 0, 0),
-(65, '2023-04-22', 0, 0);
+(66, '2023-04-19', 0, 0),
+(67, '2023-04-20', 0, 0),
+(68, '2023-04-21', 0, 0),
+(69, '2023-04-22', 0, 0),
+(70, '2023-04-23', 0, 0),
+(71, '2023-04-19', 0, 0),
+(72, '2023-04-20', 0, 0),
+(73, '2023-04-21', 0, 0),
+(74, '2023-04-22', 0, 0),
+(75, '2023-04-23', 0, 0);
 
 --
--- Indexen voor geëxporteerde tabellen
+-- Indexen voor geÃ«xporteerde tabellen
 --
 
 --
@@ -314,14 +328,14 @@ ALTER TABLE `werkdag`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT voor geëxporteerde tabellen
+-- AUTO_INCREMENT voor geÃ«xporteerde tabellen
 --
 
 --
 -- AUTO_INCREMENT voor een tabel `logboek`
 --
 ALTER TABLE `logboek`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT voor een tabel `opmerkingen`
@@ -357,10 +371,10 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT voor een tabel `werkdag`
 --
 ALTER TABLE `werkdag`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
--- Beperkingen voor geëxporteerde tabellen
+-- Beperkingen voor geÃ«xporteerde tabellen
 --
 
 --
@@ -418,4 +432,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
