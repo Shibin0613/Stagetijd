@@ -209,7 +209,6 @@ if (isset($_POST['inleveren'])) {
   $taken = $_POST['taken'];
   $uren = $_POST['uren'];
   $tags = $_POST['tags'];
-  $datum = $_POST['datum'];
 
 
   $table = "taken";

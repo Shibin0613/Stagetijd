@@ -133,6 +133,11 @@ class LogService extends Services {
        }
     }
 
+    public function createLogboek()
+    {
+        
+    }
+
     public function ReturnTasksByDayId($internship, $id) {
         foreach ($internship->logboek as $key => $log) :
             if ($log->monday->id === $id) :
