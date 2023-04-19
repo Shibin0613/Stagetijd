@@ -32,6 +32,7 @@ DB::connect();
         <li class="nav-item"><a href="#">zijn</a></li>
         <li class="nav-item"><a href="#">goeie</a></li>
         <li class="nav-item"><a href="#">items</a></li>
+        <li class="nav-item"><form action="" method="POST"><button name="uitlog">Uitloggen</button></form></li>
       </ul>
     </nav>
     <button class="nav-toggle" aria-label="Toggle navigation">
@@ -44,3 +45,14 @@ DB::connect();
 
 </body>
 </html>
+
+<?php
+if(isset($_POST['uitlog']))
+{
+  session_start();
+  session_destroy();
+  header("location:login.php");
+  exit();
+}
+
+?>

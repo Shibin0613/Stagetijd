@@ -143,30 +143,35 @@ class LogService extends Services {
             if ($log->monday->id === $id) :
                 foreach ($log->monday->tasks as $key => $task) :
                     echo $task->task;
+                    echo "<button>Opmerking toevoegen</button>";
                     echo "<br>";
                 endforeach;
                 break;
             elseif ($log->tuesday->id === $id) :
                 foreach ($log->tuesday->tasks as $key => $task) :
                     echo $task->task;
+                    echo "<button>Opmerking toevoegen</button>";
                     echo "<br>";
                 endforeach;
                 break;
             elseif ($log->wednesday->id === $id) :
                 foreach ($log->wednesday->tasks as $key => $task) :
                     echo $task->task;
+                    echo "<button>Opmerking toevoegen</button>";
                     echo "<br>";
                 endforeach;
                 break;
             elseif ($log->thursday->id === $id) :
                 foreach ($log->thursday->tasks as $key => $task) :
                     echo $task->task;
+                    echo "<button>Opmerking toevoegen</button>";
                     echo "<br>";
                 endforeach;
                 break;
             elseif ($log->friday->id === $id) :
                 foreach ($log->friday->tasks as $key => $task) :
                     echo $task->task;
+                    echo "<button>Opmerking toevoegen</button>";
                     echo "<br>";
                 endforeach;
                 break;
