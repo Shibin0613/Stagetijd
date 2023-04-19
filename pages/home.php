@@ -1,5 +1,8 @@
 <?php
 session_start();
+if ($_SESSION['userId'] === null || $_SESSION['role'] === null){
+    header("location: ../index.php");
+}
 switch ($_SESSION['role']) {
     case '1':
         include('accountOverzicht.php');

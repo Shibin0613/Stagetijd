@@ -2,6 +2,9 @@
 if (!isset($_SESSION)) {
     session_start();
 }
+if ($_SESSION['userId'] === null || $_SESSION['role'] === null){
+    header("location: ../index.php");
+}
 
 require_once "../vendor/autoload.php";
 use Controllers\DB;
@@ -19,6 +22,34 @@ DB::connect();
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../Styles/style.css">
     <script src="https://kit.fontawesome.com/42b6daea05.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="calendar.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {
+      'packages': ['corechart']
+    });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+      var data = google.visualization.arrayToDataTable([
+        ['Task', 'Hours per Day'],
+        ['Work', 11],
+        ['Eat', 2],
+        ['Commute', 2],
+        ['Watch TV', 2],
+        ['Sleep', 7]
+      ]);
+
+      var options = {
+        title: 'My Daily Activities'
+      };
+
+      var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+      chart.draw(data, options);
+    }
+  </script>
 </head>
 <body>
     
@@ -28,7 +59,7 @@ DB::connect();
     <a href="#" class="logo">StageTijd</a>
     <nav class="nav">
       <ul class="nav-list">
-        <li class="nav-item"><a href="#">home</a></li>
+        <li class="nav-item"><a href="home.php">home</a></li>
         <li class="nav-item"><a href="#">zijn</a></li>
         <li class="nav-item"><a href="#">goeie</a></li>
         <li class="nav-item"><a href="#">items</a></li>

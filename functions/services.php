@@ -110,10 +110,11 @@ class StudentServices extends Services
 
     public function getTagsBy($data, $taken)
     {
-        $tagQuery = DB::join(["taken", "koppeltakentags"], ["id", "tagId"], ["koppeltakentags", "tags"], [["takenId", "*"], ["id", "id as tag_id, naam as naam"]], ["taken.id", $data]);
+        $tagQuery = DB::join(["taken", "koppeltakentags"], ["id", "tagId"], ["koppeltakentags", "tags"], [["takenId", "*"], ["id", "id as tag_id, naam as naam, userid as userid"]], ["taken.id", $data]);
         foreach ($tagQuery as $key => $value) {
             $tag = new Tags($value["tag_id"]);
             $tag->name = $value["naam"];
+            $tag->tagUser = $value["userid"];
 
             $taken->tags[] = $tag;
         }
@@ -125,12 +126,9 @@ class StudentServices extends Services
 
 class LogService extends Services {
 
-    public function DayLoop($day)
+    public function insertTask($day)
     {
-       foreach ($day->task as $key => $value) {
-        echo $value->task;
-        echo "<br>";
-       }
+       
     }
 
     public function createLogboek()
@@ -138,40 +136,56 @@ class LogService extends Services {
 
     }
 
-    public function ReturnTasksByDayId($internship, $id) {
+    public function getFirstUserFromSupervisor($PBId)
+    {
+        $stageQuery = DB::select('stage', ['praktijkbegeleiderId' => $PBId]);
+        return $stageQuery[0]['studentId'];
+    }
+
+    public function ReturnTasksByDayId($internship, $id, $role) {
         foreach ($internship->logboek as $key => $log) :
             if ($log->monday->id === $id) :
                 foreach ($log->monday->tasks as $key => $task) :
                     echo $task->task;
-                    echo "<button>Opmerking toevoegen</button>";
+                    if ($role === 3 || $role === 1) {
+                        echo "<button>Opmerking toevoegen</button>";
+                    }
                     echo "<br>";
                 endforeach;
                 break;
             elseif ($log->tuesday->id === $id) :
                 foreach ($log->tuesday->tasks as $key => $task) :
                     echo $task->task;
-                    echo "<button>Opmerking toevoegen</button>";
+                    if ($role === 3 || $role === 1) {
+                        echo "<button>Opmerking toevoegen</button>";
+                    }
                     echo "<br>";
                 endforeach;
                 break;
             elseif ($log->wednesday->id === $id) :
                 foreach ($log->wednesday->tasks as $key => $task) :
                     echo $task->task;
-                    echo "<button>Opmerking toevoegen</button>";
+                    if ($role === 3 || $role === 1) {
+                        echo "<button>Opmerking toevoegen</button>";
+                    }
                     echo "<br>";
                 endforeach;
                 break;
             elseif ($log->thursday->id === $id) :
                 foreach ($log->thursday->tasks as $key => $task) :
                     echo $task->task;
-                    echo "<button>Opmerking toevoegen</button>";
+                    if ($role === 3 || $role === 1) {
+                        echo "<button>Opmerking toevoegen</button>";
+                    }
                     echo "<br>";
                 endforeach;
                 break;
             elseif ($log->friday->id === $id) :
                 foreach ($log->friday->tasks as $key => $task) :
                     echo $task->task;
-                    echo "<button>Opmerking toevoegen</button>";
+                    if ($role === 3 || $role === 1) {
+                        echo "<button>Opmerking toevoegen</button>";
+                    }
                     echo "<br>";
                 endforeach;
                 break;
