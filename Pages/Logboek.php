@@ -211,19 +211,19 @@ if (isset($_POST['inleveren'])) {
   $tags = $_POST['tags'];
 
 
-  $table = "taken";
-  $data = [
+  
+  //voegtoe in tabel taken 
+  $takentable = "taken";
+  $takendata = [
     'taak' => $taken,
     'uur' => $uren,
   ];
-
-  if ($taakinsert = DB::insert($table, $data)) {
+  //als het gelukt is, alert taak is toegevoegd
+  if ($taakinsert = DB::insert($takentable, $takendata)) {
     echo "<script>alert('Taak is toegevoegd')</script>";
 ?>
     <META HTTP-EQUIV="Refresh" CONTENT="0; URL=logboek.php">
   <?php
-    //als het al bestaat, dan wordt de docent teruggestuurd naar de pagina met ingevulde 
-    //voornaam en achternaam, maar de email is dan leeg.
   } else {
     echo "<script>alert('Het is niet gelukt om een taak toe te voegen, probeer later opnieuw!')</script>";
   ?>
@@ -231,37 +231,44 @@ if (isset($_POST['inleveren'])) {
 <?php
   }
 
-  //Insert naar tabel taken
-  $table = "taken"; //Welke table je insert
-  $data = [];
+
+
+
+  //haal vanuit de database taken id waar je net de taak hebt toegevoegd. 
+  $takentable = "taken"; //Welke table je insert
+  $takendata = [];
   $result = DB::select($table, $data);
   $laatstetaakid = end($result)['id'];
 
-  //Insert naar koppeltabel takentags
-  $table = "koppeltakentags";
-  $data = [
+
+
+  //voegtoe naar koppeltabel takentags
+  $koppeltakentagstable = "koppeltakentags";
+  $koppeltakentagsdata = [
     'takenId' => $laatstetaakid,
     'tagId' => $tags,
   ];
-  $taakinsert = DB::insert($table, $data);
+  $taakinsert = DB::insert($koppeltakentagstable, $koppeltakentagsdata);
 
 
-  //Insert naar koppeltakenwerkdag
-
+  
+  
+  
+  //voegtoe naar koppeltakenwerkdag
   $today = date('Y-m-d');
-  $table = "werkdag";
-  $data = [];
-  $result = DB::select($table, $data);
+  $werkdagtable = "werkdag";
+  $werkdagdata = [];
+  $result = DB::select($werkdagtable, $werkdagdata);
   $check = array_search($today, array_column($result, 'datum'));
   $werkdagidoftoday = $result[$check]['id'];
 
-  $table = "koppeltakenwerkdag";
-  $data = [
+
+  $koppeltakenwerkdagtable = "koppeltakenwerkdag";
+  $koppeltakenwerkdagdata = [
     'taakId' => $laatstetaakid,
     'werkdagId' => $werkdagidoftoday,
   ];
-  $result = DB::insert($table, $data);
-
+  $result = DB::insert($koppeltakenwerkdagtable, $koppeltakenwerkdagdata);
   
 }
 ?>
