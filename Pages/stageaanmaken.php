@@ -58,14 +58,14 @@ if (isset($_POST['verstuur'])) {
 		[
 			'naam' => $_POST['naam_leerling'],
 			'email' => $_POST['email_leerling'],
-			'role' => 1,
+			'role' => 2,
 			'activationcode' => uniqid(),
 		],
 
 		[
 			'naam' => $_POST['naam_praktijkbegeleider'],
 			'email' => $_POST['email_praktijkbegeleider'],
-			'role' => 2,
+			'role' => 3,
 			'activationcode' => uniqid()."check",
 		]
 	];
