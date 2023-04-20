@@ -105,7 +105,6 @@ class StudentServices extends Services
             $this->getTagsBy($value["taken_id"], $taak);
             $workday->tasks[] = $taak;
         }
-
     }
 
     public function getTagsBy($data, $taken)
@@ -124,16 +123,15 @@ class StudentServices extends Services
 }
 
 
-class LogService extends Services {
+class LogService extends Services
+{
 
     public function insertTask($day)
     {
-       
     }
 
     public function createLogboek()
     {
-
     }
 
     public function getFirstUserFromSupervisor($PBId)
@@ -142,7 +140,8 @@ class LogService extends Services {
         return $stageQuery[0]['studentId'];
     }
 
-    public function ReturnTasksByDayId($internship, $id, $role) {
+    public function ReturnTasksByDayId($internship, $id, $role)
+    {
         foreach ($internship->logboek as $key => $log) :
             if ($log->monday->id === $id) :
                 foreach ($log->monday->tasks as $key => $task) :
@@ -193,36 +192,61 @@ class LogService extends Services {
         endforeach;
     }
 
-    public function ReturnTotalWorkHours($internship) {
+    public function ReturnTotalWorkHours($internship)
+    {
         $Totalhour = 0;
         foreach ($internship->logboek as $key => $log) :
-                foreach ($log->monday->tasks as $key => $task) :
-                    $Totalhour += $task->hour;
-                endforeach;
-                
-                foreach ($log->tuesday->tasks as $key => $task) :
-                    $Totalhour += $task->hour;
-                
-                endforeach;
-                
-                foreach ($log->wednesday->tasks as $key => $task) :
-                    $Totalhour += $task->hour;
-                    
-                endforeach;
-                
-                foreach ($log->thursday->tasks as $key => $task) :
-                    $Totalhour += $task->hour;
-                
-                endforeach;
-                
-                foreach ($log->friday->tasks as $key => $task) :
-                    $Totalhour += $task->hour;
-                    
-                endforeach;
-                
+            foreach ($log->monday->tasks as $key => $task) :
+                $Totalhour += $task->hour;
+            endforeach;
+
+            foreach ($log->tuesday->tasks as $key => $task) :
+                $Totalhour += $task->hour;
+
+            endforeach;
+
+            foreach ($log->wednesday->tasks as $key => $task) :
+                $Totalhour += $task->hour;
+
+            endforeach;
+
+            foreach ($log->thursday->tasks as $key => $task) :
+                $Totalhour += $task->hour;
+
+            endforeach;
+
+            foreach ($log->friday->tasks as $key => $task) :
+                $Totalhour += $task->hour;
+
+            endforeach;
+
         endforeach;
-    return $Totalhour;
+        return $Totalhour;
     }
+}
 
+class AccountOverviewServices extends Services
+{
+    // public function Filter()
+    // {
+    //     if (!isset($_SESSION['roleUserFilter']) && !isset($_SESSION['activeUserFilter'])) {
+    //         $_SESSION['roleUserFilter'] = 1;
+    //         $_SESSION['activeUserFilter'] = 1;
+    //     }
 
+    //     if ($_SESSION['roleUserFilter'] !== isset($_POST['role_filter'])) {
+    //         $_SESSION['roleUserFilter'] = isset($_POST['role_filter']);
+    //     }
+    //     if ($_SESSION['activeUserFilter'] !== isset($_POST['active_filter'])) {
+    //         $_SESSION['actiiveUserFilter'] = isset($_POST['active_filter']);
+    //     }
+
+    //     $table = "users";
+    //     $data = [
+    //         'active' => $_SESSION['activeUserFilter'],
+    //         'role' => $_SESSION['roleUserFilter'],
+    //     ];
+    //     $result = DB::select($table, $data);
+    //     return $result;
+    // }
 }
