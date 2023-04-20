@@ -256,7 +256,6 @@ $weeknummer = date('W');
 
           <form method='POST' action=''>
             <br>
-            <?php echo ?>
             <?php
             $takenwerkdagtable="koppeltakenwerkdag";
             $data=[

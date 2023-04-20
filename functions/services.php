@@ -228,14 +228,14 @@ class AccountOverviewServices extends Services
             $_SESSION['roleUserFilter'] = 1;
             $_SESSION['activeUserFilter'] = 1;
         }
-
-        if ($_SESSION['roleUserFilter'] !== isset($_POST['role_filter'])) {
-            $_SESSION['roleUserFilter'] = isset($_POST['role_filter']);
+        if (isset($_POST['role_filter']) && isset($_POST['active_filter'])) {
+            if ($_SESSION['roleUserFilter'] !== $_POST['role_filter']) {
+                $_SESSION['roleUserFilter'] = $_POST['role_filter'];
+            }
+            if ($_SESSION['activeUserFilter'] !== $_POST['active_filter']) {
+                $_SESSION['activeUserFilter'] = $_POST['active_filter'];
+            }
         }
-        if ($_SESSION['activeUserFilter'] !== isset($_POST['active_filter'])) {
-            $_SESSION['actiiveUserFilter'] = isset($_POST['active_filter']);
-        }
-
         $table = "users";
         $data = [
             'active' => $_SESSION['activeUserFilter'],

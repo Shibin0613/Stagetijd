@@ -34,10 +34,11 @@ DB::connect();
     <a href="#" class="logo">StageTijd</a>
     <nav class="nav">
       <ul class="nav-list">
-        <li class="nav-item"><a href="home.php">home</a></li>
-        <li class="nav-item"><a href="#">zijn</a></li>
-        <li class="nav-item"><a href="#">goeie</a></li>
-        <li class="nav-item"><a href="#">items</a></li>
+        <li class="nav-item"><a href="home.php">Home</a></li>
+        <?php if ($_SESSION['role'] == 1) : ?>
+        <li class="nav-item"><a href="stageaanmaken.php">Stage aanmaken</a></li>
+        <li class="nav-item"><a href="DocentToevoegen.php">Docent toevoegen</a></li>
+        <?php endif; ?>
         <li class="nav-item"><form action="" method="POST"><button name="uitlog">Uitloggen</button></form></li>
       </ul>
     </nav>

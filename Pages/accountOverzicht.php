@@ -1,9 +1,12 @@
-<?php 
+<?php
 require_once('../functions/services.php');
 
 use Controllers\DB;
+
 $AccountOverviewService = new AccountOverviewServices();
 ?>
+
+
 <!DOCTYPE html>
 <html>
 
@@ -38,34 +41,34 @@ $AccountOverviewService = new AccountOverviewServices();
 
         <div class="table-responsive">
             <table class="table table-striped table-hover">
-                
+
                 <?php
 
                 if ($users && $_SESSION['roleUserFilter'] == 2) : ?>
-                <thead>
-                    <tr>
-                        <th>Naam</th>
-                        <th>E-mail</th>
-                        <th>verwijderen</th>
-                    </tr>
-                </thead>
+                    <thead>
+                        <tr>
+                            <th>Naam</th>
+                            <th>E-mail</th>
+                            <th>verwijderen</th>
+                        </tr>
+                    </thead>
 
-                <?php    foreach ($users as $row) {
+                    <?php foreach ($users as $row) {
                         echo '
                 <tr>
                 <a href="logboek.php?Userid=' . $row['id'] . '"><div class="StudentenOverzicht">' . $row['naam'] . '</div></a>
                 </tr>';
                     }
                 elseif ($users && $_SESSION['roleUserFilter'] == 1) : ?>
-                <thead>
-                    <tr>
-                        <th>Naam</th>
-                        <th>E-mail</th>
-                        <th>verwijderen</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($users as $row) :
+                    <thead>
+                        <tr>
+                            <th>Naam</th>
+                            <th>E-mail</th>
+                            <th>verwijderen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($users as $row) :
                             $id = $row['id'];
                             echo '
                             <tr>
@@ -75,7 +78,7 @@ $AccountOverviewService = new AccountOverviewServices();
                             </tr>
                             ';
                         endforeach;
-                        elseif ($users && $_SESSION['roleUserFilter'] == 3) : ?>
+                    elseif ($users && $_SESSION['roleUserFilter'] == 3) : ?>
                         <thead>
                             <tr>
                                 <th>Naam</th>
@@ -84,13 +87,13 @@ $AccountOverviewService = new AccountOverviewServices();
                             </tr>
                         </thead>
                     <tbody>
-                        <?php foreach ($users as $row) :
+                    <?php foreach ($users as $row) :
                             $id = $row['id'];
                             echo '
                             <tr>
                                     <td>' . $row['naam'] . '<input type="hidden" name="id[]" value="' . $row['id'] . '"></td>
                                     <td>' . $row['email'] . '</td>
-                                    <td><a href="?userId=' . $id . '"><i class="fa-solid fa-trash"></i></a></td>
+                                    <td>'. $row['active'].'</td>
                                 </tr>
                             ';
                         endforeach;
