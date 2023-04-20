@@ -147,7 +147,6 @@ class LogService extends Services
                 foreach ($log->monday->tasks as $key => $task) :
                     echo $task->task;
                     if ($role === 3 || $role === 1) {
-                        echo "<button>Opmerking toevoegen</button>";
                     }
                     echo "<br>";
                 endforeach;
@@ -156,7 +155,6 @@ class LogService extends Services
                 foreach ($log->tuesday->tasks as $key => $task) :
                     echo $task->task;
                     if ($role === 3 || $role === 1) {
-                        echo "<button>Opmerking toevoegen</button>";
                     }
                     echo "<br>";
                 endforeach;
@@ -165,7 +163,6 @@ class LogService extends Services
                 foreach ($log->wednesday->tasks as $key => $task) :
                     echo $task->task;
                     if ($role === 3 || $role === 1) {
-                        echo "<button>Opmerking toevoegen</button>";
                     }
                     echo "<br>";
                 endforeach;
@@ -174,7 +171,6 @@ class LogService extends Services
                 foreach ($log->thursday->tasks as $key => $task) :
                     echo $task->task;
                     if ($role === 3 || $role === 1) {
-                        echo "<button>Opmerking toevoegen</button>";
                     }
                     echo "<br>";
                 endforeach;
@@ -183,7 +179,6 @@ class LogService extends Services
                 foreach ($log->friday->tasks as $key => $task) :
                     echo $task->task;
                     if ($role === 3 || $role === 1) {
-                        echo "<button>Opmerking toevoegen</button>";
                     }
                     echo "<br>";
                 endforeach;
@@ -227,26 +222,26 @@ class LogService extends Services
 
 class AccountOverviewServices extends Services
 {
-    // public function Filter()
-    // {
-    //     if (!isset($_SESSION['roleUserFilter']) && !isset($_SESSION['activeUserFilter'])) {
-    //         $_SESSION['roleUserFilter'] = 1;
-    //         $_SESSION['activeUserFilter'] = 1;
-    //     }
+    public function Filter()
+    {
+        if (!isset($_SESSION['roleUserFilter']) && !isset($_SESSION['activeUserFilter'])) {
+            $_SESSION['roleUserFilter'] = 1;
+            $_SESSION['activeUserFilter'] = 1;
+        }
 
-    //     if ($_SESSION['roleUserFilter'] !== isset($_POST['role_filter'])) {
-    //         $_SESSION['roleUserFilter'] = isset($_POST['role_filter']);
-    //     }
-    //     if ($_SESSION['activeUserFilter'] !== isset($_POST['active_filter'])) {
-    //         $_SESSION['actiiveUserFilter'] = isset($_POST['active_filter']);
-    //     }
+        if ($_SESSION['roleUserFilter'] !== isset($_POST['role_filter'])) {
+            $_SESSION['roleUserFilter'] = isset($_POST['role_filter']);
+        }
+        if ($_SESSION['activeUserFilter'] !== isset($_POST['active_filter'])) {
+            $_SESSION['actiiveUserFilter'] = isset($_POST['active_filter']);
+        }
 
-    //     $table = "users";
-    //     $data = [
-    //         'active' => $_SESSION['activeUserFilter'],
-    //         'role' => $_SESSION['roleUserFilter'],
-    //     ];
-    //     $result = DB::select($table, $data);
-    //     return $result;
-    // }
+        $table = "users";
+        $data = [
+            'active' => $_SESSION['activeUserFilter'],
+            'role' => $_SESSION['roleUserFilter'],
+        ];
+        $result = DB::select($table, $data);
+        return $result;
+    }
 }

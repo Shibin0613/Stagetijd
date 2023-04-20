@@ -1,9 +1,8 @@
 <?php 
-include "header.php";
-// require_once('../functions/services.php');
+require_once('../functions/services.php');
 
 use Controllers\DB;
-// $AccountOverviewService = new AccountOverviewServices();
+$AccountOverviewService = new AccountOverviewServices();
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,7 +18,7 @@ use Controllers\DB;
 
 <body>
     <?php
-    // $users = $AccountOverviewService->filter();
+    $users = $AccountOverviewService->filter();
     ?>
     <form method="POST" action="">
         <select name="active_filter" id="active_filter">
@@ -42,7 +41,7 @@ use Controllers\DB;
                 
                 <?php
 
-                if ($result && $_SESSION['roleUserFilter'] == 2) : ?>
+                if ($users && $_SESSION['roleUserFilter'] == 2) : ?>
                 <thead>
                     <tr>
                         <th>Naam</th>
@@ -51,13 +50,13 @@ use Controllers\DB;
                     </tr>
                 </thead>
 
-                <?php    foreach ($result as $row) {
+                <?php    foreach ($users as $row) {
                         echo '
                 <tr>
                 <a href="logboek.php?Userid=' . $row['id'] . '"><div class="StudentenOverzicht">' . $row['naam'] . '</div></a>
                 </tr>';
                     }
-                elseif ($result && $_SESSION['roleUserFilter'] == 1) : ?>
+                elseif ($users && $_SESSION['roleUserFilter'] == 1) : ?>
                 <thead>
                     <tr>
                         <th>Naam</th>
@@ -66,7 +65,7 @@ use Controllers\DB;
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($result as $row) :
+                    <?php foreach ($users as $row) :
                             $id = $row['id'];
                             echo '
                             <tr>
@@ -76,7 +75,7 @@ use Controllers\DB;
                             </tr>
                             ';
                         endforeach;
-                        elseif ($result && $_SESSION['roleUserFilter'] == 3) : ?>
+                        elseif ($users && $_SESSION['roleUserFilter'] == 3) : ?>
                         <thead>
                             <tr>
                                 <th>Naam</th>
@@ -85,7 +84,7 @@ use Controllers\DB;
                             </tr>
                         </thead>
                     <tbody>
-                        <?php foreach ($result as $row) :
+                        <?php foreach ($users as $row) :
                             $id = $row['id'];
                             echo '
                             <tr>

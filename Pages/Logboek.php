@@ -80,6 +80,10 @@ $weeknummer = date('W');
         <?php if ($_SESSION['role'] === 2) : ?>
           <button type="button" data-toggle="modal" data-target="#myModal">Taak toevoegen</button>
         <?php endif; ?>
+        <?php if(($_SESSION['role'] === 1) || ($_SESSION['role'] ===3)){
+          echo "<button type='button' data-toggle='modal' data-target='#myModal1'>Opmerking toevoegen</button>";
+        }
+        ?>
       <?php endif; ?>
       <h1>logboek</h1>
       <table>
@@ -225,11 +229,50 @@ $weeknummer = date('W');
               ?>
             </select>
             <button type="submit"><a href="TagsOverzicht.php">Tags</a></button>
-            <p>Datum</p>
-            <input type='date' name='datum' id='myDateInput' readonly>
             <br>
             <br>
             <button type='submit' name='inleveren'>Inleveren</button>
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Modal2 -->
+    <div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="emapleModalLabel">Opmerking toevoegen</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+
+          <form method='POST' action=''>
+            <br>
+            <?php echo ?>
+            <?php
+            $takenwerkdagtable="koppeltakenwerkdag";
+            $data=[
+              'werkdagId' => '',
+            ];
+            $result = DB::select($takenwerkdagtable, $data)
+
+            ?>
+            <p>Opmerking</p>
+            <textarea rows='4' cols='50' name='taken'></textarea>
+            <br>
+            <p>Hoelang ben je daarmee bezig geweest?<br>
+            </p>
+            <input type='number' name='uren' required max='8'> uren
+            <br>
+            <button type='submit' name='inleveren'>Opslaan</button>
           </form>
 
         </div>
