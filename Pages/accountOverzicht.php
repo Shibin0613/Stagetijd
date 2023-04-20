@@ -1,3 +1,10 @@
+<?php 
+include "header.php";
+// require_once('../functions/services.php');
+
+use Controllers\DB;
+// $AccountOverviewService = new AccountOverviewServices();
+?>
 <!DOCTYPE html>
 <html>
 
@@ -11,44 +18,90 @@
 </head>
 
 <body>
-<?php
-include "header.php";
-use Controllers\DB;
+    <?php
+    // $users = $AccountOverviewService->filter();
+    ?>
+    <form method="POST" action="">
+        <select name="active_filter" id="active_filter">
+            <option value="1">Actief</option>
+            <option value="0">Niet Actief</option>
+        </select>
+        <select name="role_filter" id="role_filter">
+            <option value="1">Docenten</option>
+            <option value="2">Studenten</option>
+            <option value="3">Praktijkbegeleider</option>
+        </select>
+        <input type="submit" value="Filter">
+    </form>
+    <div class="container">
+        <div class="row">
+        </div class="col-sm">
 
-$table = "users";
-$active_filter = isset($_POST['active_filter']) ? $_POST['active_filter'] : "1";
-$data = [
-    'active' => $active_filter,
-    'role' => 2,
-];
-$result = DB::select($table, $data);
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                
+                <?php
 
-?>
-        <form method="POST" action="">
-    <select name="active_filter" id="active_filter">
-        <option value="1">Actief</option>
-        <option value="0">Niet Actief</option>
-    </select>
-    <input type="submit" value="Filter">
-</form>  
-<div class="container">
-    <div class="row">
-        </div class="col-sm"> 
+                if ($result && $_SESSION['roleUserFilter'] == 2) : ?>
+                <thead>
+                    <tr>
+                        <th>Naam</th>
+                        <th>E-mail</th>
+                        <th>verwijderen</th>
+                    </tr>
+                </thead>
+
+                <?php    foreach ($result as $row) {
+                        echo '
+                <tr>
+                <a href="logboek.php?Userid=' . $row['id'] . '"><div class="StudentenOverzicht">' . $row['naam'] . '</div></a>
+                </tr>';
+                    }
+                elseif ($result && $_SESSION['roleUserFilter'] == 1) : ?>
+                <thead>
+                    <tr>
+                        <th>Naam</th>
+                        <th>E-mail</th>
+                        <th>verwijderen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($result as $row) :
+                            $id = $row['id'];
+                            echo '
+                            <tr>
+                            <td>' . $row['naam'] . '<input type="hidden" name="id[]" value="' . $row['id'] . '"></td>
+                            <td>' . $row['email'] . '</td>
+                            <td><a href="?userId=' . $id . '"><i class="fa-solid fa-trash"></i></a></td>
+                            </tr>
+                            ';
+                        endforeach;
+                        elseif ($result && $_SESSION['roleUserFilter'] == 3) : ?>
+                        <thead>
+                            <tr>
+                                <th>Naam</th>
+                                <th>E-mail</th>
+                                <th>Actief</th>
+                            </tr>
+                        </thead>
+                    <tbody>
+                        <?php foreach ($result as $row) :
+                            $id = $row['id'];
+                            echo '
+                            <tr>
+                                    <td>' . $row['naam'] . '<input type="hidden" name="id[]" value="' . $row['id'] . '"></td>
+                                    <td>' . $row['email'] . '</td>
+                                    <td><a href="?userId=' . $id . '"><i class="fa-solid fa-trash"></i></a></td>
+                                </tr>
+                            ';
+                        endforeach;
+                    else :
+                        echo "No users found.";
+                    endif;
+
+                    ?>
 
 
-        <?php
-
-        if ($result) {
-            foreach ($result as $row) {
-                echo '<a href="logboek.php?Userid=' . $row['id'] . '"><div class="StudentenOverzicht">' . $row['naam'] . '</div></a>';
-            }
-        } else {
-            echo "No users found.";
-        }
-
-        ?>
-
-
-    </div>
+        </div>
     </div>
     </div>
