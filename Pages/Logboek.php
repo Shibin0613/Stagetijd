@@ -76,8 +76,7 @@ $weeknummer = date('W');
   <div class="parent">
     <div class="grid1">
       <?php if (isset($_GET["id"])) :
-        $logService->ReturnTasksByDayId($internship, intval($_GET["id"]), $_SESSION['role']); ?>
-        <?php if ($_SESSION['role'] === 2) : ?>
+        if ($_SESSION['role'] === 2) :?>
           <button type="button" data-toggle="modal" data-target="#myModal">Taak toevoegen</button>
         <?php endif; ?>
         <?php if(($_SESSION['role'] === 1) || ($_SESSION['role'] ===3)){
@@ -256,20 +255,16 @@ $weeknummer = date('W');
 
           <form method='POST' action=''>
             <br>
+            <?php $werkdagid = $_GET['id'];
+            ?>
             <?php
-            $takenwerkdagtable="koppeltakenwerkdag";
-            $data=[
-              'werkdagId' => '',
-            ];
-            $result = DB::select($takenwerkdagtable, $data)
+            $logService->ReturnTasksByDayId($internship, intval($_GET["id"]), $_SESSION['role']);
 
             ?>
             <p>Opmerking</p>
             <textarea rows='4' cols='50' name='taken'></textarea>
             <br>
-            <p>Hoelang ben je daarmee bezig geweest?<br>
-            </p>
-            <input type='number' name='uren' required max='8'> uren
+            <br>
             <br>
             <button type='submit' name='inleveren'>Opslaan</button>
           </form>
