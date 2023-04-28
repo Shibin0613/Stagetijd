@@ -126,12 +126,106 @@ class StudentServices extends Services
 class LogService extends Services
 {
 
-    public function insertTask($day)
+    public function insertTask()
     {
+        $taken = $_POST['taken'];
+        $uren = $_POST['uren'];
+
+        $takentable = "taken";
+        $takendata = [
+            'taak' => $taken,
+            'uur' => $uren,
+        ];
+        $taakinsert = DB::insert($takentable, $takendata);
+        return $taakinsert;
     }
 
-    public function createLogboek()
+    public function addTagtoTask($laatstetaakid)
     {
+        $tags = $_POST['tags'];
+        $koppeltakentagstable = "koppeltakentags";
+        $koppeltakentagsdata = [
+            'takenId' => $laatstetaakid,
+            'tagId' => $tags,
+        ];
+        $taakinsert = DB::insert($koppeltakentagstable, $koppeltakentagsdata);
+    }
+
+    public function addTasktoWorkday($laatstetaakid)
+    {
+        $today = $_GET['id'];
+        $werkdagtable = "werkdag";
+        $werkdagdata = [];
+        $result = DB::select($werkdagtable, $werkdagdata);
+        $check = array_search($today, array_column($result, 'id'));
+        $werkdagidoftoday = $result[$check]['id'];
+
+
+        $koppeltakenwerkdagtable = "koppeltakenwerkdag";
+        $koppeltakenwerkdagdata = [
+            'taakId' => $laatstetaakid,
+            'werkdagId' => $werkdagidoftoday,
+        ];
+        $result = DB::insert($koppeltakenwerkdagtable, $koppeltakenwerkdagdata);
+    }
+
+    public function getTagsInAddTask()
+    {
+        $table = "tags";
+        $data = [];
+        $tagsresult = DB::select($table, $data);
+        foreach ($tagsresult as $result) {
+            $tagid = $result['id'];
+            echo
+            "<option value='$tagid'>" . $result['naam'] . "</option>";
+        }
+    }
+
+    public function createLogboekWeek($internship)
+    {
+
+        $weeknummer = date('W');
+        $table = "logboek";
+        $data = [];
+        $result = DB::select($table, $data);
+        $weeknrfromdatabase = end($result)['weeknummer'];
+        //Insert naar werkdagtabel in een loop met aankomende 5 dagen als het weer maandag is
+
+        if ($weeknrfromdatabase != $weeknummer) {
+            $table = "werkdag";
+            $date = new DateTime();
+            for ($i = 0; $i < 5; $i++) { // loop 5 times
+                $data = [
+                    'datum' => $date->format('Y-m-d'),
+                    'ziek' => '0',
+                    'vrij' => '0',
+                ];
+                $date->add(new DateInterval('P1D')); // add 1 day to the date
+                $werkdaginsert = DB::insert($table, $data);
+            }
+            //Vanuit database de werkdag uit om in koppeltabel Logboek te inserten
+            $table = "werkdag";
+            $data = [];
+            $result = DB::select($table, $data);
+            $laatstewerkdagid = end($result)['id'];
+            $tweedelaatstewerkdagid = (end($result)['id']) - 1;
+            $derdelaatstewerkdagid = (end($result)['id']) - 2;
+            $vierdelaatstewerkdagid = (end($result)['id']) - 3;
+            $vijfdelaatstewerkdagid = (end($result)['id']) - 4;
+
+
+            $table = "logboek";
+            $data = [
+                'stageId' => $internship->id,
+                'weeknummer' => $weeknummer,
+                'maandagId' => $vijfdelaatstewerkdagid,
+                'dinsdagId' => $vierdelaatstewerkdagid,
+                'woensdagId' => $derdelaatstewerkdagid,
+                'donderdagId' => $tweedelaatstewerkdagid,
+                'vrijdagId' => $laatstewerkdagid,
+            ];
+            $result = DB::insert($table, $data);
+        }
     }
 
     public function getFirstUserFromSupervisor($PBId)
@@ -218,7 +312,54 @@ class LogService extends Services
         endforeach;
         return $Totalhour;
     }
+
+    public function getTagHours($internship)
+    {
+        $tagQuery = DB::select('tags', [
+            'userId' => $_SESSION['logUserId']
+        ]);
+        foreach ($tagQuery as $key => $value) :
+            $tagHours = 0;
+            foreach ($internship->logboek as $key => $log) :
+                foreach ($log->monday->tasks as $key => $task) :
+                    if ($task->tags === $value) :
+                        $tagHours += $task->hour;
+                    endif;
+                endforeach;
+
+                foreach ($log->tuesday->tasks as $key => $task) :
+                    if ($task->tags === $value) :
+                        $tagHours += $task->hour;
+                    endif;
+
+                endforeach;
+
+                foreach ($log->wednesday->tasks as $key => $task) :
+                    if ($task->tags === $value) :
+                        $tagHours += $task->hour;
+                    endif;
+                endforeach;
+
+                foreach ($log->thursday->tasks as $key => $task) :
+                    if ($task->tags === $value) :
+                        $tagHours += $task->hour;
+                    endif;
+                endforeach;
+
+                foreach ($log->friday->tasks as $key => $task) :
+                    if ($task->tags === $value) :
+                        $tagHours += $task->hour;
+                    endif;
+                endforeach;
+
+            endforeach;
+        endforeach;
+        return $tagHours;
+    }
 }
+
+
+
 
 class AccountOverviewServices extends Services
 {

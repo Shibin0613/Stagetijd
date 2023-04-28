@@ -15,7 +15,7 @@ $studentService = new StudentServices();
 $logService = new LogService();
 
 //Get user info, internship info, log info, task info, tag info and comments that are connected to the user.
-if (isset($_GET['Userid'])&& $_SESSION['role'] === 1){
+if (isset($_GET['Userid']) && $_SESSION['role'] === 1) {
   $_SESSION['logUserId'] = $_GET["Userid"];
 } elseif (!isset($_GET['Userid']) && $_SESSION['role'] === 2) {
   $_SESSION['logUserId'] = $_SESSION["userId"];
@@ -33,7 +33,10 @@ $internship = $user->internship[$internshipFilter];
 
 use Controllers\DB;
 
-$weeknummer = date('W');
+// $tagHours = $logService->getTagHours($internship);
+// var_dump($tagHours);
+
+$logService->createLogboekWeek($internship);
 ?>
 <!DOCTYPE html>
 <html>
@@ -68,7 +71,20 @@ $weeknummer = date('W');
       var chart = new google.visualization.PieChart(document.getElementById('piechart'));
 
       chart.draw(data, options);
+
+
     }
+  </script>
+  <script>
+    const today = new Date();
+    const dateInput = document.getElementById("myDateInput");
+    dateInput.value = today.toISOString().substr(0, 10);
+
+    function checkdelete() {
+      return confirm('Weet je zeker dat je deze daily willen verwijderen?');
+    }
+    var weeknummer = "<?php echo $weeknummer; ?>";
+    document.getElementById("weeknummer").innerHTML = weeknummer;
   </script>
 </head>
 
@@ -76,10 +92,17 @@ $weeknummer = date('W');
   <div class="parent">
     <div class="grid1">
       <?php if (isset($_GET["id"])) :
-        if ($_SESSION['role'] === 2) :?>
+        //shows the user's tasks from given day
+        $logService->ReturnTasksByDayId($internship, intval($_GET["id"]), $_SESSION['role']);
+
+        //if the user is a student, show the button "taak toevoegen"
+        if ($_SESSION['role'] === 2) : ?>
           <button type="button" data-toggle="modal" data-target="#myModal">Taak toevoegen</button>
         <?php endif; ?>
-        <?php if(($_SESSION['role'] === 1) || ($_SESSION['role'] ===3)){
+
+
+        <?php //if the user is a supervisor or a teacher, show the button "Opmerking toevoegen"
+        if (($_SESSION['role'] === 1) || ($_SESSION['role'] === 3)) {
           echo "<button type='button' data-toggle='modal' data-target='#myModal1'>Opmerking toevoegen</button>";
         }
         ?>
@@ -107,7 +130,10 @@ $weeknummer = date('W');
             <td><a href="logboek.php?id=<?= $value->thursday->id ?>">Donderdag</td>
             <td><a href="logboek.php?id=<?= $value->friday->id ?>">Vrijdag</td>
             <td>Uren</td>
-            <?php switch ($value->approved) {
+
+            <?php
+            if ($_SESSION['role'] === 2 || $_SESSION['role'] === 1) :
+            switch ($value->approved) {
               case 0:
                 echo "<td> Niet goedgekeurd</td>";
                 break;
@@ -117,60 +143,14 @@ $weeknummer = date('W');
               default:
                 echo "<td> Er is iets mis gegaan.</td>";
                 break;
-            } ?>
+            } 
+            elseif ($_SESSION['role']) : 
+              //week goedkeuren voor de praktijkbegelijder
+            ?>
           </tr>
-        <?php endforeach ?>
+        <?php endif; endforeach; ?>
       </table>
 
-
-
-
-      <?php
-      $table = "logboek";
-      $data = [];
-      $result = DB::select($table, $data);
-      $weeknrfromdatabase = end($result)['weeknummer'];
-      //Insert naar werkdagtabel in een loop met aankomende 5 dagen als het weer maandag is
-
-      if ($weeknrfromdatabase != $weeknummer) {
-
-        $table = "werkdag";
-        $date = new DateTime();
-        for ($i = 0; $i < 5; $i++) { // loop 5 times
-          $data = [
-            'datum' => $date->format('Y-m-d'),
-            'ziek' => '0',
-            'vrij' => '0',
-          ];
-          $date->add(new DateInterval('P1D')); // add 1 day to the date
-          $werkdaginsert = DB::insert($table, $data);
-        }
-        //Vanuit database de werkdag uit om in koppeltabel Logboek te inserten
-        $table = "werkdag";
-        $data = [];
-        $result = DB::select($table, $data);
-        $laatstewerkdagid = end($result)['id'];
-        $tweedelaatstewerkdagid = (end($result)['id']) - 1;
-        $derdelaatstewerkdagid = (end($result)['id']) - 2;
-        $vierdelaatstewerkdagid = (end($result)['id']) - 3;
-        $vijfdelaatstewerkdagid = (end($result)['id']) - 4;
-
-
-        $table = "logboek";
-        $data = [
-          'stageId' => $internship->id,
-          'weeknummer' => $weeknummer,
-          'maandagId' => $vijfdelaatstewerkdagid,
-          'dinsdagId' => $vierdelaatstewerkdagid,
-          'woensdagId' => $derdelaatstewerkdagid,
-          'donderdagId' => $tweedelaatstewerkdagid,
-          'vrijdagId' => $laatstewerkdagid,
-        ];
-        $result = DB::insert($table, $data);
-      }
-
-
-      ?>
     </div>
     <div class="grid2">
       <h1>bedrijfs info</h1>
@@ -216,16 +196,7 @@ $weeknummer = date('W');
             <br>
             <p>Tags</p>
             <select name='tags'>
-              <?php
-              $table = "tags";
-              $data = [];
-              $tagsresult = DB::select($table, $data);
-              foreach ($tagsresult as $result) {
-                $tagid = $result['id'];
-                echo
-                "<option value='$tagid'>" . $result['naam'] . "</option>";
-              }
-              ?>
+              <?php $logService->getTagsInAddTask(); ?>
             </select>
             <button type="submit"><a href="TagsOverzicht.php">Tags</a></button>
             <br>
@@ -241,8 +212,8 @@ $weeknummer = date('W');
     </div>
   </div>
 
-    <!-- Modal2 -->
-    <div class="modal fade" id="myModal1" role="dialog">
+  <!-- Modal2 -->
+  <div class="modal fade" id="myModal1" role="dialog">
     <div class="modal-dialog">
 
       <!-- Modal content-->
@@ -258,7 +229,6 @@ $weeknummer = date('W');
             <?php $werkdagid = $_GET['id'];
             ?>
             <?php
-            $logService->ReturnTasksByDayId($internship, intval($_GET["id"]), $_SESSION['role']);
 
             ?>
             <p>Opmerking</p>
@@ -280,82 +250,29 @@ $weeknummer = date('W');
 </body>
 
 </html>
-<script>
-  const today = new Date();
-  const dateInput = document.getElementById("myDateInput");
-  dateInput.value = today.toISOString().substr(0, 10);
 
-  function checkdelete() {
-    return confirm('Weet je zeker dat je deze daily willen verwijderen?');
-  }
-  var weeknummer = "<?php echo $weeknummer; ?>";
-  document.getElementById("weeknummer").innerHTML = weeknummer;
-</script>
 
 <?php
 if (isset($_POST['inleveren'])) {
 
-
+  $insertedTasks = $logService->insertTask();
 
   //voegtoe in tabel taken 
-  $taken = $_POST['taken'];
-  $uren = $_POST['uren'];
 
-  $takentable = "taken";
-  $takendata = [
-    'taak' => $taken,
-    'uur' => $uren,
-  ];
   //als het gelukt is, alert taak is toegevoegd
-  if ($taakinsert = DB::insert($takentable, $takendata)) {
-    echo "<script>alert('Taak is toegevoegd')</script>";
-?>
+  if ($insertedTasks) :
+    echo "<script>alert('Taak is toegevoegd')</script>"; ?>
     <META HTTP-EQUIV="Refresh" CONTENT="0; URL=logboek.php">
-  <?php
-  } else {
-    echo "<script>alert('Het is niet gelukt om een taak toe te voegen, probeer later opnieuw!')</script>";
-  ?>
+  <?php else :
+    echo "<script>alert('Het is niet gelukt om een taak toe te voegen, probeer later opnieuw!')</script>"; ?>
     <META HTTP-EQUIV="Refresh" CONTENT="0; URL=logboek.php">
-<?php
-  }
-
-
-
-
+<?php endif;
   //haal vanuit de database taken id waar je net de taak hebt toegevoegd. 
   $takentable = "taken"; //Welke table je insert
   $takendata = [];
   $result = DB::select($takentable, $takendata);
   $laatstetaakid = end($result)['id'];
-
-
-  //voegtoe naar koppeltabel takentags
-  $tags = $_POST['tags'];
-  $koppeltakentagstable = "koppeltakentags";
-  $koppeltakentagsdata = [
-    'takenId' => $laatstetaakid,
-    'tagId' => $tags,
-  ];
-  $taakinsert = DB::insert($koppeltakentagstable, $koppeltakentagsdata);
-
-
-
-
-
-  //voegtoe naar koppeltakenwerkdag
-  $today = $_GET['id'];
-  $werkdagtable = "werkdag";
-  $werkdagdata = [];
-  $result = DB::select($werkdagtable, $werkdagdata);
-  $check = array_search($today, array_column($result, 'id'));
-  $werkdagidoftoday = $result[$check]['id'];
-
-
-  $koppeltakenwerkdagtable = "koppeltakenwerkdag";
-  $koppeltakenwerkdagdata = [
-    'taakId' => $laatstetaakid,
-    'werkdagId' => $werkdagidoftoday,
-  ];
-  $result = DB::insert($koppeltakenwerkdagtable, $koppeltakenwerkdagdata);
+  $logService->addTagtoTask($laatstetaakid);
+  $logService->addTasktoWorkday($laatstetaakid);
 }
 ?>

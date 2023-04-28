@@ -49,16 +49,18 @@ $AccountOverviewService = new AccountOverviewServices();
                         <tr>
                             <th>Naam</th>
                             <th>E-mail</th>
-                            <th>verwijderen</th>
+                            <th>Logboek</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
 
-                    <?php foreach ($users as $row) {
-                        echo '
-                <tr>
-                <a href="logboek.php?Userid=' . $row['id'] . '"><div class="StudentenOverzicht">' . $row['naam'] . '</div></a>
-                </tr>';
-                    }
+                    <?php foreach ($users as $row) : ?>
+                        <tr>
+                            <td><?= $row['naam'];?></td>
+                            <td><?= $row['email'] ?></td>
+                            <td><a href="logboek.php?Userid=<?=$row['id']?>">Logboek</div></a></td>
+                        </tr>
+                    <?php endforeach;
                 elseif ($users && $_SESSION['roleUserFilter'] == 1) : ?>
                     <thead>
                         <tr>
@@ -93,7 +95,7 @@ $AccountOverviewService = new AccountOverviewServices();
                             <tr>
                                     <td>' . $row['naam'] . '<input type="hidden" name="id[]" value="' . $row['id'] . '"></td>
                                     <td>' . $row['email'] . '</td>
-                                    <td>'. $row['active'].'</td>
+                                    <td>' . $row['active'] . '</td>
                                 </tr>
                             ';
                         endforeach;
