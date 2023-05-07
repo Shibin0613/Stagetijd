@@ -165,7 +165,7 @@ $logService->createLogboekWeek($internship);
       <?php $totalHours = $logService->ReturnTotalWorkHours($internship);
       ?>
       <div class="progress" role="progressbar" aria-label="Success example" aria-valuemin="0" aria-valuemax="100">
-        <div class="progress-bar bg-success" style="width: <?php echo $percentageHours = $totalHours / 8; ?>%"></div><center><?php echo $totalHours . "/800"; ?>%</center>
+        <div class="progress-bar bg-success" style="width: <?php echo $percentageHours = $totalHours / 8; ?>%"></div><center><?php echo $totalHours . "/800"; ?></center>
       </div>
       <div id="piechart" style="width: 400px; height: 300px;"></div>
       <?php 
