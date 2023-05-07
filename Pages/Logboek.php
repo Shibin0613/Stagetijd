@@ -98,12 +98,15 @@ $logService->createLogboekWeek($internship);
         //if the user is a student, show the button "taak toevoegen"
         if ($_SESSION['role'] === 2) : ?>
           <button type="button" data-toggle="modal" data-target="#myModal">Taak toevoegen</button>
+          <br><br>
+          <b><?php $logService->ReturnCommentByDayId(); ?></b>
         <?php endif; ?>
 
 
         <?php //if the user is a supervisor or a teacher, show the button "Opmerking toevoegen"
         if (($_SESSION['role'] === 1) || ($_SESSION['role'] === 3)) {
           echo "<button type='button' data-toggle='modal' data-target='#myModal1'>Opmerking toevoegen</button>";
+          ?><br><br><b><?php $logService->ReturnCommentByDayId(); ?></b><?php
         }
         ?>
       <?php endif; ?>
@@ -164,7 +167,7 @@ $logService->createLogboekWeek($internship);
 
       ?>
       <div class="progress" role="progressbar" aria-label="Success example" aria-valuemin="0" aria-valuemax="100">
-        <div class="progress-bar bg-success" style="width: <?php echo $percentageHours = $totalHours / 8; ?>%"><?php echo $totalHours . "/800"; ?>%</div>
+        <div class="progress-bar bg-success" style="width: <?php echo $percentageHours = $totalHours / 8; ?>%"></div><center><?php echo $totalHours . "/800"; ?>%</center>
       </div>
       <div id="piechart" style="width: 400px; height: 300px;"></div>
     </div>
@@ -223,20 +226,17 @@ $logService->createLogboekWeek($internship);
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
-
+          <?php $logService->ReturnTasksByDayId($internship, intval($_GET["id"]), $_SESSION['role']); ?>
           <form method='POST' action=''>
             <br>
             <?php $werkdagid = $_GET['id'];
             ?>
-            <?php
-            echo $werkdagid;
-            ?>
             <p>Opmerking</p>
-            <textarea rows='4' cols='50' name='taken'></textarea>
+            <textarea rows='4' cols='50' name='opmerking'></textarea>
             <br>
             <br>
             <br>
-            <button type='submit' name='inleveren'>Opslaan</button>
+            <button type='submit' name='opmerkingopslaan'>Opslaan</button>
           </form>
 
         </div>
@@ -274,5 +274,29 @@ if (isset($_POST['inleveren'])) {
   $laatstetaakid = end($result)['id'];
   $logService->addTagtoTask($laatstetaakid);
   $logService->addTasktoWorkday($laatstetaakid);
+}
+?>
+
+<?php
+if (isset($_POST['opmerkingopslaan'])) {
+
+  $insertedCommend = $logService->insertComment();
+
+  //voegtoe in tabel taken 
+
+  //als het gelukt is, alert taak is toegevoegd
+  if ($insertedCommend) :
+    echo "<script>alert('Opmerking is toegevoegd')</script>"; ?>
+    <META HTTP-EQUIV="Refresh" CONTENT="0; URL=logboek.php">
+  <?php else :
+    echo "<script>alert('Het is niet gelukt om een opmerking toe te voegen, probeer later opnieuw!')</script>"; ?>
+    <META HTTP-EQUIV="Refresh" CONTENT="0; URL=logboek.php">
+<?php endif;
+  //haal vanuit de database taken id waar je net de taak hebt toegevoegd. 
+  $opmerkingtable = "opmerkingen"; //Welke table je insert
+  $opmerkingdata = [];
+  $result = DB::select($opmerkingtable, $opmerkingdata);
+  $laatsteopmerkingid = end($result)['id'];
+  $logService->addCommenttoWorkday($laatsteopmerkingid);
 }
 ?>

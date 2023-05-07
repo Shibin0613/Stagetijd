@@ -356,6 +356,50 @@ class LogService extends Services
         endforeach;
         return $tagHours;
     }
+
+    public function insertComment()
+    {
+        $opmerking = $_POST['opmerking'];
+
+        $opmerkingtable = "opmerkingen";
+        $opmerkingdata = [
+            'opmerking' => $opmerking,
+            'userId' =>  $_SESSION['logUserId'],
+
+        ];
+        $opmerkinginsert = DB::insert($opmerkingtable, $opmerkingdata);
+        return $opmerkinginsert;
+    }
+
+    public function addCommenttoWorkday($laatsteopmerkingid)
+    {
+        $werkdagid = $_GET['id'];
+        $koppelwerkdagopmerkingtable = "koppelwerkdagopmerking";
+        $koppelwerkdagopmerkingdata = [
+            'werkdagId' => $werkdagid,
+            'opmerkingId' => $laatsteopmerkingid,
+        ];
+        $taakinsert = DB::insert($koppelwerkdagopmerkingtable, $koppelwerkdagopmerkingdata);
+    }
+
+    public function ReturncommentByDayId()
+    {
+        $koppelwerkdagopmerkingtable = "koppelwerkdagopmerking";
+        $koppelwerkdagopmerkingdata = [
+            "werkdagId" => $_GET['id'],
+        ];
+        $opmerkingid = DB::select($koppelwerkdagopmerkingtable,$koppelwerkdagopmerkingdata);
+        if (isset($opmerkingid[0]['opmerkingId'])){
+            $opmerkingid = $opmerkingid[0]['opmerkingId'];
+            $opmerkingtable = "opmerkingen";
+            $opmerkingdata = [
+                'id' => $opmerkingid,
+            ];
+            $result = DB::select($opmerkingtable,$opmerkingdata);
+            echo "Opmerking:".$result[0]['opmerking'];
+        }else{
+        }
+    }
 }
 
 
@@ -386,3 +430,17 @@ class AccountOverviewServices extends Services
         return $result;
     }
 }
+
+class AccountActivateServices extends Services
+{
+    public function updatePassword(){
+        $activationcode = $_GET['activationcode'];
+        $wachtwoord = $_POST['wachtwoord'];
+        $bevestigwachtwoord = $_POST['bevestigwachtwoord'];
+        $active = 1;
+
+        $updatepassword = DB::update("UPDATE `users` SET wachtwoord = '$wachtwoord', active ='$active' WHERE activationcode ='$activationcode'");
+        return $updatepassword;
+    }
+}
+

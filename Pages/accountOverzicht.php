@@ -56,9 +56,12 @@ $AccountOverviewService = new AccountOverviewServices();
 
                     <?php foreach ($users as $row) : ?>
                         <tr>
+                            <form action="" method="POST">
                             <td><?= $row['naam'];?></td>
                             <td><?= $row['email'] ?></td>
                             <td><a href="logboek.php?Userid=<?=$row['id']?>">Logboek</div></a></td>
+                            <td><button name>stage goedkeuren</button>
+                            </form>
                         </tr>
                     <?php endforeach;
                 elseif ($users && $_SESSION['roleUserFilter'] == 1) : ?>

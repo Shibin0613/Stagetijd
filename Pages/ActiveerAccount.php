@@ -1,7 +1,7 @@
 <?php
-include ("header.php");
 //voor het geval dat emailadres null is, dan wordt hij naar andere pagina gestuurd, en toont geen foutmelding 
-
+include('../functions/services.php');
+$accountActivateServices = new AccountActivateServices();
 
 $activationcode = $_GET['activationcode'];
 
@@ -79,14 +79,14 @@ $activationcode = $_GET['activationcode'];
 if(isset($_POST['activeren'])){
     $wachtwoord = $_POST['wachtwoord'];
     $bevestigwachtwoord = $_POST['bevestigwachtwoord'];
-    $active = 1;
 
     if ($wachtwoord != $bevestigwachtwoord) {
         echo "<script>alert('De ingevoerde wachtwoorden komen niet overeen. Probeer het opnieuw.')</script>";
         exit();
     }else
     {
-        if(DB::update("UPDATE `users` SET wachtwoord = '$wachtwoord', active ='$active' WHERE activationcode ='$activationcode'")){
+        $updatedpassword = $accountActivateServices->updatePassword();
+        if($updatedpassword){
             echo "<script>alert('Je account is geactiveerd, je kan nu inloggen met je emailadres en wachtwoord')</script>";
             ?>
             <META HTTP-EQUIV="Refresh" CONTENT="0; URL=login.php">
