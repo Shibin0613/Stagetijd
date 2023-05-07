@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 19 apr 2023 om 15:49
--- Serverversie: 10.4.24-MariaDB
--- PHP-versie: 8.1.6
+-- Gegenereerd op: 07 mei 2023 om 16:23
+-- Serverversie: 10.4.22-MariaDB
+-- PHP-versie: 8.1.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -33,7 +33,7 @@ CREATE TABLE `koppeltakentags` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geÃ«xporteerd voor tabel `koppeltakentags`
+-- Gegevens worden ge毛xporteerd voor tabel `koppeltakentags`
 --
 
 INSERT INTO `koppeltakentags` (`takenId`, `tagId`) VALUES
@@ -46,7 +46,12 @@ INSERT INTO `koppeltakentags` (`takenId`, `tagId`) VALUES
 (45, 1),
 (46, 2),
 (47, 2),
-(47, 1);
+(47, 1),
+(50, 2),
+(51, 2),
+(52, 2),
+(53, 1),
+(54, 2);
 
 -- --------------------------------------------------------
 
@@ -60,7 +65,7 @@ CREATE TABLE `koppeltakenwerkdag` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geÃ«xporteerd voor tabel `koppeltakenwerkdag`
+-- Gegevens worden ge毛xporteerd voor tabel `koppeltakenwerkdag`
 --
 
 INSERT INTO `koppeltakenwerkdag` (`taakId`, `werkdagId`) VALUES
@@ -71,7 +76,12 @@ INSERT INTO `koppeltakenwerkdag` (`taakId`, `werkdagId`) VALUES
 (43, 33),
 (44, 33),
 (45, 33),
-(46, 34);
+(46, 34),
+(50, 33),
+(51, 33),
+(52, 33),
+(53, 73),
+(54, 31);
 
 -- --------------------------------------------------------
 
@@ -103,12 +113,13 @@ CREATE TABLE `logboek` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geÃ«xporteerd voor tabel `logboek`
+-- Gegevens worden ge毛xporteerd voor tabel `logboek`
 --
 
 INSERT INTO `logboek` (`id`, `stageId`, `weeknummer`, `maandagId`, `dinsdagId`, `woensdagId`, `donderdagId`, `vrijdagId`, `goedgekeurd`) VALUES
 (2, 9, 15, 31, 32, 33, 34, 35, 0),
-(20, 9, 16, 71, 72, 73, 74, 75, 0);
+(20, 9, 16, 71, 72, 73, 74, 75, 0),
+(21, 9, 18, 76, 77, 78, 79, 80, 0);
 
 -- --------------------------------------------------------
 
@@ -139,7 +150,7 @@ CREATE TABLE `stage` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geÃ«xporteerd voor tabel `stage`
+-- Gegevens worden ge毛xporteerd voor tabel `stage`
 --
 
 INSERT INTO `stage` (`id`, `bedrijf`, `praktijkbegeleiderId`, `studentId`, `startdatum`, `einddatum`, `active`) VALUES
@@ -158,7 +169,7 @@ CREATE TABLE `tags` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geÃ«xporteerd voor tabel `tags`
+-- Gegevens worden ge毛xporteerd voor tabel `tags`
 --
 
 INSERT INTO `tags` (`id`, `naam`, `userid`) VALUES
@@ -178,7 +189,7 @@ CREATE TABLE `taken` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geÃ«xporteerd voor tabel `taken`
+-- Gegevens worden ge毛xporteerd voor tabel `taken`
 --
 
 INSERT INTO `taken` (`id`, `taak`, `uur`) VALUES
@@ -189,7 +200,14 @@ INSERT INTO `taken` (`id`, `taak`, `uur`) VALUES
 (44, 'Taak 5', 4),
 (45, 'Taak 6', 4),
 (46, 'Taak 7', 3),
-(47, 'Taak 8', 3);
+(47, 'Taak 8', 3),
+(48, 'taak 9', 3),
+(49, 'taak 11', 3),
+(50, 'taak 11', 5),
+(51, 'taak 12', 4),
+(52, 'taak 13', 6),
+(53, 'Taak 13', 3),
+(54, 'Ik heb iets gedaan', 3);
 
 -- --------------------------------------------------------
 
@@ -208,7 +226,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geÃ«xporteerd voor tabel `users`
+-- Gegevens worden ge毛xporteerd voor tabel `users`
 --
 
 INSERT INTO `users` (`id`, `naam`, `email`, `wachtwoord`, `role`, `active`, `activationcode`) VALUES
@@ -230,7 +248,7 @@ CREATE TABLE `werkdag` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geÃ«xporteerd voor tabel `werkdag`
+-- Gegevens worden ge毛xporteerd voor tabel `werkdag`
 --
 
 INSERT INTO `werkdag` (`id`, `datum`, `ziek`, `vrij`) VALUES
@@ -248,10 +266,15 @@ INSERT INTO `werkdag` (`id`, `datum`, `ziek`, `vrij`) VALUES
 (72, '2023-04-20', 0, 0),
 (73, '2023-04-21', 0, 0),
 (74, '2023-04-22', 0, 0),
-(75, '2023-04-23', 0, 0);
+(75, '2023-04-23', 0, 0),
+(76, '2023-05-07', 0, 0),
+(77, '2023-05-08', 0, 0),
+(78, '2023-05-09', 0, 0),
+(79, '2023-05-10', 0, 0),
+(80, '2023-05-11', 0, 0);
 
 --
--- Indexen voor geÃ«xporteerde tabellen
+-- Indexen voor ge毛xporteerde tabellen
 --
 
 --
@@ -328,14 +351,14 @@ ALTER TABLE `werkdag`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT voor geÃ«xporteerde tabellen
+-- AUTO_INCREMENT voor ge毛xporteerde tabellen
 --
 
 --
 -- AUTO_INCREMENT voor een tabel `logboek`
 --
 ALTER TABLE `logboek`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT voor een tabel `opmerkingen`
@@ -347,7 +370,7 @@ ALTER TABLE `opmerkingen`
 -- AUTO_INCREMENT voor een tabel `stage`
 --
 ALTER TABLE `stage`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT voor een tabel `tags`
@@ -359,22 +382,22 @@ ALTER TABLE `tags`
 -- AUTO_INCREMENT voor een tabel `taken`
 --
 ALTER TABLE `taken`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT voor een tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT voor een tabel `werkdag`
 --
 ALTER TABLE `werkdag`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
--- Beperkingen voor geÃ«xporteerde tabellen
+-- Beperkingen voor ge毛xporteerde tabellen
 --
 
 --

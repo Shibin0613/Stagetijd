@@ -70,7 +70,20 @@ if (isset($_POST['verstuur'])) {
 		]
 	];
 	$table = "users";
-	$praktijkbegeleiderID = DB::insert($table, $data);
+	
+	if($praktijkbegeleiderID = DB::insert($table, $data)){
+	echo "<script>alert('Er zijn zowel voor leerling en praktijkbegeleider accounts aangemaakt, diegene krijgt een mail om zijn account te activeren')</script>";
+	?>
+			<META HTTP-EQUIV="Refresh" CONTENT="0; URL=stageaanmaken.php">
+		<?php
+			//als het al bestaat, dan wordt de docent teruggestuurd naar de pagina met ingevulde 
+			//voornaam en achternaam, maar de email is dan leeg.
+		} else {
+			echo "<script>alert('Het is niet gelukt om een account aan te maken, probeer later opnieuw!')</script>";
+		}?>
+			<META HTTP-EQUIV="Refresh" CONTENT="0; URL=stageaanmaken.php">
+	<?php
+
 	$studentID = $praktijkbegeleiderID - 1;
 
 	$guidl = $data[0]['activationcode'];
@@ -88,6 +101,8 @@ if (isset($_POST['verstuur'])) {
 	];
 	$table = "stage";
 	$stage = DB::insert($table, $data);
+	
+	
 
 	$naamp = $_POST['naam_praktijkbegeleider'];
 	$emailp = $_POST['email_praktijkbegeleider'];
@@ -145,17 +160,7 @@ if (isset($_POST['verstuur'])) {
 	$message .= "<img src='https://lh3.googleusercontent.com/4CoybolZm3Xr1WNZbGPF_ZoUDR_Yn1NmWuo23yYHiZCdtkNm9GJKRQ5ugGJ5Y2zOWfSjGk5izMIDqh67=w378-h189-rw' style='width: 20%;'>";
 	$message .= "</body></html>";
 
-	if (mail($emailp, $subject, $message, $headers)) {
-		echo "<script>alert('Er zijn zowel voor leerling en praktijkbegeleider accounts aangemaakt, diegene krijgt een mail om zijn account te activeren')</script>";
-?>
-		<META HTTP-EQUIV="Refresh" CONTENT="0; URL=stageaanmaken.php">
-	<?php
-		//als het al bestaat, dan wordt de docent teruggestuurd naar de pagina met ingevulde 
-		//voornaam en achternaam, maar de email is dan leeg.
-	} else {
-		echo "<script>alert('Het is niet gelukt om een account aan te maken, probeer later opnieuw!')</script>";
-	?>
-		<META HTTP-EQUIV="Refresh" CONTENT="0; URL=stageaanmaken.php">
-<?php
+	mail($emailp, $subject, $message, $headers);
+
 	}
-}
+?>

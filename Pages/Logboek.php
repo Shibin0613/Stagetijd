@@ -229,7 +229,7 @@ $logService->createLogboekWeek($internship);
             <?php $werkdagid = $_GET['id'];
             ?>
             <?php
-
+            echo $werkdagid;
             ?>
             <p>Opmerking</p>
             <textarea rows='4' cols='50' name='taken'></textarea>
