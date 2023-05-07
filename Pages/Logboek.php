@@ -161,15 +161,21 @@ $logService->createLogboekWeek($internship);
       echo $internship->company;
       echo "<br>"; ?>
 
-
       <h1>statistiek</h1>
       <?php $totalHours = $logService->ReturnTotalWorkHours($internship);
-
       ?>
       <div class="progress" role="progressbar" aria-label="Success example" aria-valuemin="0" aria-valuemax="100">
         <div class="progress-bar bg-success" style="width: <?php echo $percentageHours = $totalHours / 8; ?>%"></div><center><?php echo $totalHours . "/800"; ?>%</center>
       </div>
       <div id="piechart" style="width: 400px; height: 300px;"></div>
+      <?php 
+      if (($_SESSION['role'] === 1)) {
+        echo "
+        <form action='' method='POST'>
+        <button onclick='return checkdelete()' name='stageafronden'>Stage afronden</button>
+        </form>";
+      }
+      ?>
     </div>
   </div>
 
@@ -300,3 +306,24 @@ if (isset($_POST['opmerkingopslaan'])) {
   $logService->addCommenttoWorkday($laatsteopmerkingid);
 }
 ?>
+
+<?php 
+if(isset($_POST['stageafronden'])){
+  $userid = $_GET['Userid'];
+  $stagetable="stage";
+  $stagedata=[
+    "studentId" => $userid,
+  ];
+  $result = DB::select($stagetable,$stagedata);
+  $praktijkbegeleiderId = $result[0]['praktijkbegeleiderId'];
+
+  DB::update("UPDATE `stage` SET active = '0' WHERE studentId ='$userid'");
+  DB::update("UPDATE `users` SET active = '0' WHERE id ='$praktijkbegeleiderId'");
+}
+?>
+
+<script>
+function checkdelete(){
+  return confirm('Weet je zeker dat je deze stage wilt afronden?');
+}
+</script>

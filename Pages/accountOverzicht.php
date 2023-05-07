@@ -56,12 +56,9 @@ $AccountOverviewService = new AccountOverviewServices();
 
                     <?php foreach ($users as $row) : ?>
                         <tr>
-                            <form action="" method="POST">
                             <td><?= $row['naam'];?></td>
                             <td><?= $row['email'] ?></td>
                             <td><a href="logboek.php?Userid=<?=$row['id']?>">Logboek</div></a></td>
-                            <td><button name>stage goedkeuren</button>
-                            </form>
                         </tr>
                     <?php endforeach;
                 elseif ($users && $_SESSION['roleUserFilter'] == 1) : ?>
@@ -79,7 +76,7 @@ $AccountOverviewService = new AccountOverviewServices();
                             <tr>
                             <td>' . $row['naam'] . '<input type="hidden" name="id[]" value="' . $row['id'] . '"></td>
                             <td>' . $row['email'] . '</td>
-                            <td><a href="?userId=' . $id . '"><i class="fa-solid fa-trash"></i></a></td>
+                            <td><a href="?userId=' . $id . '" onclick="return checkdelete()"><i class="fa-solid fa-trash"></i></a></td>
                             </tr>
                             ';
                         endforeach;
@@ -112,3 +109,9 @@ $AccountOverviewService = new AccountOverviewServices();
         </div>
     </div>
     </div>
+
+<script>
+function checkdelete(){
+  return confirm('Weet je zeker dat je deze gebruiker wilt verwijderen?');
+}
+</script>
