@@ -147,8 +147,16 @@ $logService->createLogboekWeek($internship);
                 echo "<td> Er is iets mis gegaan.</td>";
                 break;
             } 
-            elseif ($_SESSION['role']) : 
-              //week goedkeuren voor de praktijkbegelijder
+            elseif ($_SESSION['role'] === 3) : 
+              switch ($value->approved) {
+                case 0:
+                  echo "<form action='' method='POST'>
+                  <td><button onclick='return checklogboek()' name ='goedkeuren'>Goedkeuren</button></td>
+                  </form>";
+                  break;
+                  case 1:
+                    echo "<td>Goedgekeurd</td>";
+                }
             ?>
           </tr>
         <?php endif; endforeach; ?>
@@ -322,8 +330,26 @@ if(isset($_POST['stageafronden'])){
 }
 ?>
 
+<?php 
+if(isset($_POST['goedkeuren'])){
+  $userid = $_GET['Userid'];
+  $stagetable="stage";
+  $stagedata=[
+    "studentId" => $userid,
+  ];
+  $result = DB::select($stagetable,$stagedata);
+  $praktijkbegeleiderId = $result[0]['praktijkbegeleiderId'];
+
+  DB::update("UPDATE `stage` SET active = '0' WHERE studentId ='$userid'");
+  DB::update("UPDATE `users` SET active = '0' WHERE id ='$praktijkbegeleiderId'");
+}
+?>
+
 <script>
 function checkdelete(){
   return confirm('Weet je zeker dat je deze stage wilt afronden?');
+}
+function checklogboek(){
+  return confirm('Weet je zeker dat je het logboek van deze week wilt goedkeuren?');
 }
 </script>

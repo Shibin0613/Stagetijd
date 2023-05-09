@@ -1,7 +1,5 @@
 <?php
 //voor het geval dat emailadres null is, dan wordt hij naar andere pagina gestuurd, en toont geen foutmelding 
-include('../functions/services.php');
-$accountActivateServices = new AccountActivateServices();
 
 $activationcode = $_GET['activationcode'];
 
@@ -30,39 +28,30 @@ $activationcode = $_GET['activationcode'];
     <div class="form-group">
     <form action="" method="POST">
     <?php
-        use Controllers\DB;
-        $table = "users";
-        $data = [
-            'activationcode' => "$activationcode", 
-        ];
-        $email = DB::select($table, $data);
-
-        ?>
-        <label for="emailadres">Email:</label><br/>
-        <label class="form-control" style="width:20%"><?php echo $email[0]['email'];?></label>
-        <br/><br/>
-        
-        <?php
-
-        $table = "users";
-        $data = [
-            'activationcode' => "$activationcode", 
-        ];
-        $result = DB::select($table, $data);
-        
-        if(empty($result[0]['wachtwoord'])){
-            echo "
-                <label for='wachtwoord'>Wachtwoord:</label><br/>
-                <input type='password' class='form-control' style='width:20%;font-size:10px;' name='wachtwoord' minlength='8' maxlength='20' pattern='(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}' title='Minimaal 8 karakters, met een hoofdletter, kleinletter en een getal'>
-                <label for='wachtwoord'>Bevestig wachtwoord:</label><br/>
-                <input type='password' class='form-control' style='width:20%;font-size:10px;' name='bevestigwachtwoord' minlength='8' maxlength='20' pattern='(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}' title='Minimaal 8 karakters, met een hoofdletter, kleinletter en een getal'>
-                <br/><br/>
-                <button name='activeren' class='btn btn-default' style='background-color:;'>Account activeren</button>
-                ";
-        }else{
-            echo "Je account is geactiveerd, je kan door met <a href='login.php'>Inloggen</a>";
+        include("conn.php");
+        error_reporting(0);
+        $query= "SELECT * FROM users WHERE activationcode='$activationcode'";
+        $data = $conn->prepare($query);
+        $data->execute();
+        while($result=$data->fetch(PDO::FETCH_ASSOC)){
+            echo "<label for='emailadres'>Email:</label><br/>
+            <label class='form-control' style='width:20%'>".$result['email']."</label>
+            <br/><br/>
+            ";
+            if(empty($result['wachtwoord'])){
+                echo "
+                    <label for='wachtwoord'>Wachtwoord:</label><br/>
+                    <input type='password' class='form-control' style='width:20%;font-size:10px;' name='wachtwoord' minlength='8' maxlength='20' pattern='(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}' title='Minimaal 8 karakters, met een hoofdletter, kleinletter en een getal'>
+                    <label for='wachtwoord'>Bevestig wachtwoord:</label><br/>
+                    <input type='password' class='form-control' style='width:20%;font-size:10px;' name='bevestigwachtwoord' minlength='8' maxlength='20' pattern='(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}' title='Minimaal 8 karakters, met een hoofdletter, kleinletter en een getal'>
+                    <br/><br/>
+                    <button name='activeren' class='btn btn-default' style='background-color:;'>Account activeren</button>
+                    ";
+            }else{
+                echo "Je account is geactiveerd, je kan door met <a href='login.php'>Inloggen</a>";
+            }
         }
-    
+
         ?>
 
         
@@ -85,8 +74,14 @@ if(isset($_POST['activeren'])){
         exit();
     }else
     {
-        $updatedpassword = $accountActivateServices->updatePassword();
-        if($updatedpassword){
+        $activationcode = $_GET['activationcode'];
+        $wachtwoord = $_POST['wachtwoord'];
+        $bevestigwachtwoord = $_POST['bevestigwachtwoord'];
+        $active = 1;
+        
+        $query = "UPDATE users SET wachtwoord='$wachtwoord' WHERE activationcode = '$activationcode'";
+        $data = $conn->prepare($query);
+        if($data->execute()){
             echo "<script>alert('Je account is geactiveerd, je kan nu inloggen met je emailadres en wachtwoord')</script>";
             ?>
             <META HTTP-EQUIV="Refresh" CONTENT="0; URL=login.php">

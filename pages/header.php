@@ -2,9 +2,9 @@
 if (!isset($_SESSION)) {
     session_start();
 }
-if ($_SESSION['userId'] === null || $_SESSION['role'] === null){
-    header("location: ../index.php");
-}
+// if ($_SESSION['userId'] === null || $_SESSION['role'] === null){
+//     header("location: ../index.php");
+// }
 
 require_once "../vendor/autoload.php";
 use Controllers\DB;

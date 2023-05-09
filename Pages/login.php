@@ -29,13 +29,13 @@
                       <p>log hier in</p>
 
                       <div class="form-outline mb-4">
-                        <input type="email" name="email" class="form-control form-control-lg" placeholder="Enter a valid email address" />
-                        <label class="form-label" for="form3Example3">Email address</label>
+                        <input type="email" name="email" class="form-control form-control-lg" placeholder="" />
+                        <label class="form-label" for="form3Example3">Emailadres</label>
                       </div>
 
                       <div class="form-outline mb-4">
-                        <input type="password" name="wachtwoord" class="form-control form-control-lg" placeholder="Enter password" />
-                        <label class="form-label" for="form3Example4">Password</label>
+                        <input type="password" name="wachtwoord" class="form-control form-control-lg" placeholder="" />
+                        <label class="form-label" for="form3Example4">Wachtwoord</label>
                       </div>
 
                       <div class="text-center pt-1 mb-5 pb-1">
